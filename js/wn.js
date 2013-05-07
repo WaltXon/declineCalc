@@ -3,20 +3,6 @@ Walt Nixon
 May 2013
 */
 
-$('#oilTab a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
-$('#gasTab a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
-$('#waterTab a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
-
-
 var well = {
   	"initGasProduction": "",
 	"initOilProduction": "",
