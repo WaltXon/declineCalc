@@ -2,3 +2,7 @@ div.graph {
 	background-color: rgb(200,200,200);
 	height: 300px;
 }
+
+.pageWrap {
+	padding: 0px 20px 0px 20px;
+}
