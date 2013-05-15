@@ -20,6 +20,7 @@
 						<li class="active"><a href="#oilTab" data-toggle="tab">Oil</a></li>
 						<li><a href="#gasTab" data-toggle="tab">Gas</a></li>
 						<li><a href="#waterTab" data-toggle="tab">Water</a></li>
+						<li><a href="#econTab" data-toggle="tab">Econ</a></li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="oilTab">
@@ -88,12 +89,35 @@
 						  		</div>
 							</form>
 						</div>
+						<div class="tab-pane" id="econTab">
+					  		<form class="form-horizontal econ">
+					  			<div class="control-group">
+						  			<label class="control-label" for="econLife">Economic Life</label>
+						  			<div class="controls">
+						  				<input id="econLife" type="text" name="econLife" placeholder="Economic Life in Years">	
+						  			</div>
+					  			</div>
+						  		<div class="control-group">
+						  			<label class="control-label" for="oilPrice">Oil Price</label>
+						  			<div class="controls">
+						  				<input id="oilPrice" type="text" name="oilPrice" placeholder="Oil Price Per bbl ($)">
+						  			</div>
+						  		</div>
+						  		<div class="control-group">
+						  			<label class="control-label" for="gasPrice">Gas Price</label>
+						  			<div class="controls">
+						  				<input id="gasPrice" type="text" name="gasPrice" placeholder="Gas Price Per mcf ($)">
+						  			</div>
+						  		</div>
+							</form>
+						</div>
 					</div>
 				</div>
 				<div class="control-group">
 		  			<label></label>
 		  			<div class="controls">
-		  				<button id="formSubmit" type="button" class="btn btn-primary" name="formSubmit" value="">Process Data</button>
+			  				<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data</button>
+			  				<button id="useDefaults" type="button" class="btn btn-info pull-right" name="useDefaults" value="">Use Defaults</button>
 		  			</div>
 		  		</div>
 			</span>

@@ -3,17 +3,21 @@ Walt Nixon
 May 2013
 */
 
+var flag = {
+	"useDefault": "false"
+}
+
 var wellDefault = {
-  	"initGasProduction": "",
-	"initOilProduction": "",
-	"initWaterProduction": "",
-	"bFactorOil": "",
-	"bFactorGas": "",
-	"bFactorWater": "",
-	"initGasDecline": "",
-	"initOilDecline": "",
-	"initWaterDecline": "",
-	"timeT": "",
+  	"initGasProduction": "1000.0",
+	"initOilProduction": "100.0",
+	"initWaterProduction": "500.0",
+	"bFactorOil": "1.0",
+	"bFactorGas": "1.0",
+	"bFactorWater": "1.0",
+	"initGasDecline": "90",
+	"initOilDecline": "80",
+	"initWaterDecline": "90",
+	"timeStart": "",
 	"oilProductionAtTimeT": "",
 	"gasProductionAtTimeT": "",
 	"waterProductionAtTimeT": ""
@@ -30,9 +34,6 @@ var wellUser = {
 	"initOilDecline": "",
 	"initWaterDecline": "",
 	"timeStart": "",
-	"oilProductionAtTimeT": "",
-	"gasProductionAtTimeT": "",
-	"waterProductionAtTimeT": "",
 	"production": [
 		{
 			"oil": "",
@@ -43,9 +44,8 @@ var wellUser = {
 	]
 }
 /*
-q=qi*(1+b*Di*t)^(-1/b)
-when b= 0 the equation will become for exponential decline curve but how we can derive exponential equation from hyperbolic???? we can not substitute b=0 because we have (1/b) could you plz help me???
-equation of exponential is q=qi*exp(-D*t)
+ hyperbolic decline q=qi*(1+b*Di*t)^(-1/b) when b= 0 the equation will become for exponential decline curve 
+ exponential decline q=qi*exp(-D*t)
 */
 function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 	var q = 0;
@@ -53,8 +53,8 @@ function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 	var Di = initDecline;
 	var b = bFactor;
 	var tempStep = (1+b*Di*timeFromStart);
-	var q = Math.pow((qi * tempStep), (-1.0/b));
-	console.log("q set = " + q);
+	var q = Math.pow((qi / tempStep), (1.0/b));
+	/*console.log("q set = " + q);*/
 	return q;
 }
 
@@ -74,7 +74,7 @@ $('#initOilDecline').change(function() {
 });
 $('#bFactorOil').change(function() {
   
-	wellUser.initOilProduction = parseFloat(this.value);
+	wellUser.bFactorOil = parseFloat(this.value);
   	console.log("bFactorOil set = " + wellUser.bFactorOil.toString() + " : Type = " + typeof wellUser.bFactorOil);
 
 });
@@ -96,11 +96,9 @@ $('#bFactorGas').change(function() {
   	console.log("bFactorGas set = " + wellUser.bFactorGas.toString() + " : Type = " + typeof wellUser.bFactorGas);
 
 });
-$('#initWaterProduction').change(function() {
-  
+$('#initWaterProduction').change(function() {  
 	wellUser.initWaterProduction = parseFloat(this.value);
   	console.log("initWaterProduction set = " + wellUser.initWaterProduction.toString() + " : Type = " + typeof wellUser.initWaterProduction);
-
 });
 $('#initWaterDecline').change(function() {
   
@@ -114,6 +112,41 @@ $('#bFactorWater').change(function() {
   	console.log("bFactorWater set = " + wellUser.bFactorWater.toString() + " : Type = " + typeof wellUser.bFactorWater);
 
 });
+$('#econLife').change(function() {
+  
+	wellUser.econLife = parseFloat(this.value);
+  	console.log("econLife set = " + wellUser.econLife.toString() + " : Type = " + typeof wellUser.econLife);
 
+});
+$('#oilPrice').change(function() {
+  
+	wellUser.oilPrice = parseFloat(this.value);
+  	console.log("oilPrice set = " + wellUser.oilPrice.toString() + " : Type = " + typeof wellUser.oilPrice);
 
+});
+$('#gasPrice').change(function() {
+  
+	wellUser.gasPrice = parseFloat(this.value);
+  	console.log("gasPrice set = " + wellUser.gasPrice.toString() + " : Type = " + typeof wellUser.gasPrice);
+
+});
+
+$('#useDefault').click(fuction() {
+	flag.useDefault = "true";
+});
+
+var prodArray = [];
+$('#processData').click(function() {
+  for (var t=1; t<=wellUser.econLife*12; t++){
+  	if (flag.useDefault === 'true'){
+  		var oilProd = hyperDecline(wellDefault.initOilProduction, wellDefault.initOilDecline/100.0, wellDefault.bFactorOil, t);
+  	}
+  	else {
+  		var oilProd = hyperDecline(wellUser.initOilProduction, wellUser.initOilDecline/100.0, wellUser.bFactorOil, t);
+  }
+  	prodArray.push(oilProd);
+  }
+  console.log(prodArray);
+  return false;
+});
 
