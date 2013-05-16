@@ -3,8 +3,12 @@ Walt Nixon
 May 2013
 */
 
-var flag = {
-	"useDefault": "false"
+/*JSON Definitions
+=========================================================
+*/
+var global = {
+	"useDefault": "",
+	"econLife": ""
 }
 
 var wellDefault = {
@@ -18,9 +22,24 @@ var wellDefault = {
 	"initOilDecline": "80",
 	"initWaterDecline": "90",
 	"timeStart": "",
-	"oilProductionAtTimeT": "",
-	"gasProductionAtTimeT": "",
-	"waterProductionAtTimeT": ""
+	"econLife": "10",
+	"afeCost": "1000000.0",
+	"loeCost": "5000.0",
+	"production": [
+		{
+			"oil": "",
+			"gas": "",
+			"water": "",
+			"timeSinceStart":""
+		}],
+	"revenue": [
+		{
+			"oil": "",
+			"gas": "",
+			"water": "",
+			"timeSinceStart":""
+		}
+	]
 }
 
 var wellUser = {
@@ -34,7 +53,18 @@ var wellUser = {
 	"initOilDecline": "",
 	"initWaterDecline": "",
 	"timeStart": "",
+	"econLife": "",
+	"afeCost": "1000000.0",
+	"loeCost": "5000.0",
 	"production": [
+		{
+			"oil": "",
+			"gas": "",
+			"water": "",
+			"timeSinceStart":""
+
+		}],
+	"revenue": [
 		{
 			"oil": "",
 			"gas": "",
@@ -43,7 +73,8 @@ var wellUser = {
 		}
 	]
 }
-/*
+/*Function Definitinos
+=========================================================
  hyperbolic decline q=qi*(1+b*Di*t)^(-1/b) when b= 0 the equation will become for exponential decline curve 
  exponential decline q=qi*exp(-D*t)
 */
@@ -58,7 +89,30 @@ function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 	return q;
 }
 
-/*Set Values on Input Change Event*/
+function processOil (time) {
+	console.log("In processOil function");
+	var ip, Di, b;
+	if (global.useDefault == "true"){
+		console.log("use default == true");
+  		global.econLife = wellDefault.econLife;
+  		ip = wellDefault.initOilProduction;
+  		Di = wellDefault.initOilDecline/100.0;
+  		b = wellDefault.bFactorOil;
+  	}
+  	else {
+  		console.log("use default == false");
+  		global.econLife = wellUser.econLife;
+  		ip = wellUser.initOilProduction;
+  		Di = wellUser.initOilDecline/100.0;
+  		b = wellUser.bFactorOil;
+  	}
+  	return hyperDecline(ip, Di, b, time);
+}
+
+
+/*Set Values on Input Change Events
+=========================================================
+*/
 $('#initOilProduction').change(function() {
   
 	wellUser.initOilProduction = parseFloat(this.value);
@@ -130,23 +184,44 @@ $('#gasPrice').change(function() {
   	console.log("gasPrice set = " + wellUser.gasPrice.toString() + " : Type = " + typeof wellUser.gasPrice);
 
 });
+$('#loeCost').change(function() {
+  
+	wellUser.loeCost = parseFloat(this.value);
+  	console.log("loeCost set = " + wellUser.loeCost.toString() + " : Type = " + typeof wellUser.loeCost);
 
-$('#useDefault').click(fuction() {
-	flag.useDefault = "true";
+});
+$('#afeCost').change(function() {
+  
+	wellUser.afeCost = parseFloat(this.value);
+  	console.log("afeCost set = " + wellUser.afeCost.toString() + " : Type = " + typeof wellUser.afeCost);
+
+});
+
+/*Set Click Events 
+=========================================================
+*/
+
+$('#useDefault').click(function() {
+	console.log("useDefault click event handler fired");
+	global.useDefault = "true";
+	console.log("useDefault set = " + global.useDefault);
 });
 
 var prodArray = [];
+
 $('#processData').click(function() {
-  for (var t=1; t<=wellUser.econLife*12; t++){
-  	if (flag.useDefault === 'true'){
-  		var oilProd = hyperDecline(wellDefault.initOilProduction, wellDefault.initOilDecline/100.0, wellDefault.bFactorOil, t);
+	console.log("processData click handler fired");
+  	for (var t=1; t<=parseFloat(global.econLife)*12; t++){
+  		console.log("in for loop");
+  		oilProd = processOil(t);
+  		prodArray.push(oilProd);
   	}
-  	else {
-  		var oilProd = hyperDecline(wellUser.initOilProduction, wellUser.initOilDecline/100.0, wellUser.bFactorOil, t);
-  }
-  	prodArray.push(oilProd);
-  }
   console.log(prodArray);
   return false;
 });
+
+
+
+
+
 
