@@ -8,7 +8,8 @@ May 2013
 */
 var global = {
 	"useDefault": "",
-	"econLife": ""
+	"econLife": "",
+	"prodOil": []
 }
 
 var wellDefault = {
@@ -90,7 +91,7 @@ function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 }
 
 function processOil (time) {
-	console.log("In processOil function");
+	// console.log("In processOil function");
 	var ip, Di, b;
 	if (global.useDefault == "true"){
 		console.log("use default == true");
@@ -204,24 +205,55 @@ $('#afeCost').change(function() {
 $('#useDefault').click(function() {
 	console.log("useDefault click event handler fired");
 	global.useDefault = "true";
-	console.log("useDefault set = " + global.useDefault);
+	global.econLife = wellDefault.econLife;
+	console.log("global.useDefault set = " + global.useDefault);
+	console.log("global.econLife set = " + global.econLife);
 });
 
-var prodArray = [];
+
 
 $('#processData').click(function() {
 	console.log("processData click handler fired");
+	console.log("global.econLife" + global.econLife);
+	console.log("parseFloat(global.econLife) " + parseFloat(global.econLife));
   	for (var t=1; t<=parseFloat(global.econLife)*12; t++){
-  		console.log("in for loop");
+  		// console.log("in for loop");
   		oilProd = processOil(t);
-  		prodArray.push(oilProd);
+  		global.prodOil.push(oilProd);
   	}
-  console.log(prodArray);
+  console.log(global.prodOil);
+  drawGraph();
   return false;
 });
 
+/*D3 Graph Area 
+=========================================================
+*/
+function drawGraph () { 
+	var gHeight = 250;
+	var gWidth = 400;
 
+	var xScale = d3.scale.linear().
+		domain([0, function () {return (parseFloat(global.econLife)*12)}]). // your data minimum and maximum
+		range([0, gWidth]); // the pixels to map to, e.g., the width of the diagram.
 
+	var yScale = d3.scale.linear().domain([0, d3.max(global.oilProd, function(datum) { return datum; })]).
+		rangeRound([0, gheight]);
 
+	var SVG = d3.select("#graph")
+	    .append("svg")
+	    .attr("width", gWidth)
+	    .attr("height", gHeight);    
 
+	SVG.selectAll("circle")
+		.data(global.oilProd)
+		.enter().append("circle")
+			.style("stroke", "gray")
+		.style("fill", "white")
+		.attr("height", 40)
+		.attr("width", 75)
+		.attr("x", xScale)
+		.attr("y", function(d){return d});
+
+}
 
