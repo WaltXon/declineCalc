@@ -107,7 +107,7 @@ function processOil (time) {
   		Di = wellUser.initOilDecline/100.0;
   		b = wellUser.bFactorOil;
   	}
-  	return hyperDecline(ip, Di, b, time);
+  	return [time, hyperDecline(ip, Di, b, time)];
 }
 
 
@@ -229,31 +229,91 @@ $('#processData').click(function() {
 /*D3 Graph Area 
 =========================================================
 */
+function getMaxMonth(life) {
+	return parseFloat(life)*12
+}
+
+
 function drawGraph () { 
-	var gHeight = 250;
-	var gWidth = 400;
+	var margin = {top: 20, right:20, bottom:20, left:50},
+		height = 250 - margin.left - margin.right,
+		width = 400 - margin.top - margin.bottom;
 
-	var xScale = d3.scale.linear().
-		domain([0, function () {return (parseFloat(global.econLife)*12)}]). // your data minimum and maximum
-		range([0, gWidth]); // the pixels to map to, e.g., the width of the diagram.
+	var parseDate = d3.time.format("%Y%m%d").parse;
 
-	var yScale = d3.scale.linear().domain([0, d3.max(global.oilProd, function(datum) { return datum; })]).
-		rangeRound([0, gheight]);
+	var x = d3.scale.linear().
+		domain([0, getMaxMonth(global.econLife)]). // your data minimum and maximum
+		range([0, width]); // the pixels to map to, e.g., the width of the diagram.
 
-	var SVG = d3.select("#graph")
+
+	//console.log(d3.max(global.oilProd, function(d) { return d; }));
+
+	var y = d3.scale.linear()
+		.domain([0, 120])
+		.range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+	var svg = d3.select("#graph")
 	    .append("svg")
-	    .attr("width", gWidth)
-	    .attr("height", gHeight);    
+	    .data(global.econLife)
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	    .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  
 
-	SVG.selectAll("circle")
-		.data(global.oilProd)
-		.enter().append("circle")
-			.style("stroke", "gray")
-		.style("fill", "white")
-		.attr("height", 40)
-		.attr("width", 75)
-		.attr("x", xScale)
-		.attr("y", function(d){return d});
+	svg.append("g")
+		.attr("class", "axis")
+	    .call(yAxis);
+
+	svg.append("g")
+		.attr("class", "axis")
+	    .attr("transform", "translate(0," + height + ")")
+	    .call(xAxis);
+
+	var line = d3.svg.line()
+		.x(function(d) { return x(d[0]); })
+		.y(function(d) { return y(d[1]); });
+
+	svg.append("svg:path")
+		.attr("d", line(global.prodOil))
+		.style("stroke", function() { return "#000000";})
+		.style("fill", "none")
+		.style("stroke-width", "2.5");
+ 
+	var dataCirclesGroup = svg.append('svg:g');
+ 
+	var circles = dataCirclesGroup.selectAll('.data-point')
+		.data(global.prodOil);
+
+	circles
+			.enter()
+			.append('svg:circle')
+			.attr('class', 'dot')
+			.attr('fill', function() { return "green"; })
+			.attr('cx', function(d) { return x(d[0]); })
+			.attr('cy', function(d) { return y(d[1]); })
+			.attr('r', function() { return 3; })
+			.on("mouseover", function(d) {
+  				d3.select(this)
+					.attr("r", 8)
+					.attr("class", "dot-selected")
+					.transition()
+      					.duration(750);
+			})
+			.on("mouseout", function(d) {
+  				d3.select(this)
+					.attr("r", 3)
+					.attr("class", "dot")
+					.transition()
+      					.duration(750);
+			});
 
 }
 
