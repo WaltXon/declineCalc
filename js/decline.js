@@ -14,7 +14,7 @@ var wellDefault = {
   	"initGasProduction": "1000.0",
 	"initOilProduction": "100.0",
 	"initWaterProduction": "500.0",
-	"bFactorOil": "1.0",
+	"bFactorOil": "1.2",
 	"bFactorGas": "1.0",
 	"bFactorWater": "1.0",
 	"initGasDecline": "90",
@@ -83,8 +83,8 @@ function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 	var Di = initDecline/1200.0;
 	var b = bFactor;
 	var tempStep = (1+b*Di*timeFromStart);
-	var q = Math.pow((qi / tempStep), (1.0/b));
-	/*console.log("q set = " + q);*/
+	var inverseB = 1.0/b;
+	var q = Math.pow((qi / tempStep), inverseB);
 	return q;
 }
 
@@ -184,7 +184,7 @@ $('#useDefault').click(function() {
 	console.log("useDefault click event handler fired");
 	global.useDefault = "true";
 	console.log("global.useDefault set = " + global.useDefault);
-
+	wellReset(wellDefault);
   	for (var t=0; t<parseFloat(wellDefault.econLife)*12; t++){
   		// console.log("in for loop");
   		var oilProd = hyperDecline(wellDefault.initOilProduction,
@@ -203,7 +203,7 @@ $('#useDefault').click(function() {
 
 $('#processData').click(function() {
 	console.log("processData click handler fired");
-
+	wellReset(wellUser);
   	for (var t=0; t<parseFloat(wellUser.econLife)*12; t++){
   		// console.log("in for loop");
   		var oilProd = hyperDecline(wellUser.initOilProduction,
@@ -222,6 +222,11 @@ $('#processData').click(function() {
 /*D3 Graph Area 
 =========================================================
 */
+
+function wellReset(well){
+	well.production[0].oil = [];
+	well.production[0].month = [];
+}
 
 function drawGraph (production) { 
 	console.log("svg.ProdSvg Length = " + $('svg.prodSvg').length)
