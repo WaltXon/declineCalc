@@ -224,9 +224,13 @@ $('#processData').click(function() {
 */
 
 function drawGraph (production) { 
-	var margin = {top: 20, right:20, bottom:20, left:50},
+	console.log("svg.ProdSvg Length = " + $('svg.prodSvg').length)
+	if ($('svg.prodSvg').length > 0) {
+		$('svg.prodSvg').remove();
+		}
+	var margin = {top: 40, right:100, bottom:20, left:50},
 		height = 300 - margin.left - margin.right,
-		width = 475 - margin.top - margin.bottom;
+		width = $("#graph").width() - margin.top - margin.bottom;
 	
 	var data = [];
 	for (var i=0; i < d3.max(production[0].month); i++){
@@ -258,6 +262,7 @@ function drawGraph (production) {
 
 	var svg = d3.select("#graph")
 	    .append("svg")
+	    .attr("class", "prodSvg")
 	    .data(production)
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
