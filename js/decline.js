@@ -8,8 +8,6 @@ May 2013
 */
 var global = {
 	"useDefault": "",
-	"econLife": "",
-	"prodOil": []
 }
 
 var wellDefault = {
@@ -198,6 +196,7 @@ $('#useDefault').click(function() {
   	}
   console.log("wellDefault Production = " + wellDefault.production);
   drawGraph(wellDefault.production);
+  populateProdTable(wellDefault);
   return false;
 });
 
@@ -216,6 +215,7 @@ $('#processData').click(function() {
   	}
   console.log("wellUser Production = " + wellUser.production);
   drawGraph(wellUser.production);
+  populateProdTable(wellUser);
   return false;
 });
 
@@ -311,5 +311,28 @@ function drawGraph (production) {
       					.duration(750);
 			});
 
-}
+} //END drawGraph()
 
+
+/*					      <th>Year</th>
+						      <th>Month</th>
+						      <th>Net Revenue ($)</th>
+						      <th>Gross Revenue ($)</th>
+						      <th>LOE ($)</th>
+						      <th>Oil (bbls)</th>
+						      <th>Oil Revenue ($)</th>
+						      <th>Gas (mcf)</th>
+						      <th>Gas Revenue ($)</th>
+						      <th>Water (bbls)</th>*/
+function populateProdTable(well) {
+	$('#prodTable tbody tr').not(':first').not(':last').remove();
+	var html = '';
+	console.log("welL.loeCost = " + well.loeCost);
+	console.log("well = " + well);
+	for(var i = 0; i < well.production[0].month.length; i++) {
+            html += '<tr><td>' + "" + '</td><td>' + well.production[0].month[i] + '</td><td>' + "" + '</td><td>' + "" + '</td><td>' + well.loeCost + '</td><td>' + Math.round(well.production[0].oil[i]*100)/100+ '</td><td>' + "" + '</td><td>' + "" + '</td><td>' + "" + '</td><td>' + "" + '</td></tr>';
+		}    
+		   
+	$('#prodTable tbody tr').first().after(html);
+
+}
