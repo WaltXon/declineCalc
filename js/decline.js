@@ -318,6 +318,9 @@ function wellReset(well){
 
 function drawGraph (production) { 
 	console.log("svg.ProdSvg Length = " + $('svg.prodSvg').length)
+	console.log("production.month in graphGraph() = " + production.month);
+	console.log("production.month in graphGraph() = " + production.oil);
+	console.log("production graphGraph() = " + production);
 	if ($('svg.prodSvg').length > 0) {
 		$('svg.prodSvg').remove();
 		}
@@ -356,7 +359,7 @@ function drawGraph (production) {
 	var svg = d3.select("#graph")
 	    .append("svg")
 	    .attr("class", "prodSvg")
-	    .data(production)
+	    .data(data)
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
@@ -447,7 +450,7 @@ function populateProdTable(well) {
         var mCost = Math.round(well.cost.loe*100)/100;
         var dcCost = Math.round(well.cost.drillAndComplete*100)/100.;
         var tax = Math.round(((well.cost.taxes/100.0) * combRev)*100)/100;
-        if (i == 0) {ncf = -dcCost;}
+        if (i == 0) {ncf = -Math.round(dcCost*100)/100;}
         else{ncf += Math.round((combRev - mCost - tax)*100)/100;}
 
         html += '<tr><td>' + year + '</td><td>' + months + '</td><td>' + spotOil + '</td><td>' + cOil + '</td><td>' + spotGas + '</td><td>' + cGas + '</td><td>' + oilP + '</td><td>' + gasP + '</td><td>' + oilRev + '</td><td>' + gasRev + '</td><td>' + combRev + '</td><td>' + mCost + '</td><td>' + dcCost +'</td><td>' + tax + '</td><td>' + ncf + '</td></tr>';
