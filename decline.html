@@ -118,7 +118,7 @@
 						  		<div class="control-group">
 						  			<label class="control-label" for="afeCost">D&amp;C Cost</label>
 						  			<div class="controls">
-						  				<input id="afeCost" type="text" name="afeCost" placeholder="Drill and Complete Cost ($)">
+						  				<input id="drillAndCompleteCost" type="text" name="drillAndCompleteCost" placeholder="Drill and Complete Cost ($)">
 						  			</div>
 						  		</div>
 							</form>
@@ -140,29 +140,26 @@
 				</div>
 			</span>
 			</div>
-			<div class="row-fuild bottomGrid">
+			<div class="row-fluid middleGrid">
 				<span class="span12">
 					<h3>Summary</h3>
-					<div class="results container">
+					<div class="results">
 						<table id="summaryTable" class="table table-condensed table-striped table-hover">
 						  <caption>Data calculated using above parameters</caption>
 						  <thead>
 						    <tr>
-						      <th>Gross Revenue ($)</th>
-						      <th>Net Revenue ($)</th>
-						      <th>Total D&amp;C Costs ($)</th>
-						      <th>Total LOE ($)</th>
-						      <th>Cumulative Oil (bbls)</th>
-						      <th>Total Oil Revenue ($)</th>
-						      <th>Cumulative Gas (mcf)</th>
-						      <th>Total Gas Revenue ($)</th>
-						      <th>Total Water (bbls)</th>
-						      <th></th>
+						    	<th>Est. Cum. Oil (bbl)</th>
+						    	<th>Est. Cum. Gas (mcf)</th>
+						    	<th>Est. Cum. Water (bbl)</th>
+						    	<th>Est. Oil Rev ($)</th>
+						    	<th>Est. Gas Rev ($)</th>
+						    	<th>Est. Total Rev ($)</th>
+						    	<th>Est. Total Cost ($)</th>
+								<th>Est. Net Rev ($)</th>
 						    </tr>
 						  </thead>
 						  <tbody>
 						    <tr>
-						    	<td>...</td>
 						    	<td>...</td>
 						    	<td>...</td>
 						    	<td>...</td>
@@ -177,25 +174,29 @@
 					</div> <!-- End Results -->
 				</span>
 			</div>	
-		<div class="row-fuild bottomGrid">
+		<div class="row-fluid bottomGrid">
 				<span class="span12">
 					<h3>Results</h3>
-					<div class="results container">
+					<div class="results">
 						<table id="prodTable" class="table table-condensed table-striped table-hover">
 						  <caption>Data calculated using above parameters</caption>
 						  <thead>
 						    <tr>
-						      <th>Year</th>
-						      <th>Month</th>
-						      <th>Gross Revenue ($)</th>
-						      <th>Net Revenue ($)</th>
-						      <th>LOE ($)</th>
-						      <th>Oil (bbls)</th>
-						      <th>Oil Revenue ($)</th>
-						      <th>Gas (mcf)</th>
-						      <th>Gas Revenue ($)</th>
-						      <th>Water (bbls)</th>
-						      <th></th>
+						    	<th>Year</th>
+							    <th>Month</th>
+							    <th>Oil (bbl)</th>
+							    <th>Oil Cum (bbl)</th>
+								<th>Gas (mcf)</th>
+							    <th>Gas Cum (mcf)</th>
+							    <th>Oil Price ($)</th>
+							    <th>Gas Price ($)</th>
+							    <th>Oil Revenue ($)</th>
+							    <th>Gas Revenue ($)</th>
+							    <th>Combined Revenue ($)</th>
+							    <th>Monthly Costs ($)</th>
+							    <th>D&amp;C Costs ($)</th>
+							    <th>Taxes ($)</th>
+							    <th>Net Cash Flow ($)</th>					     
 						    </tr>
 						  </thead>
 						  <tbody>

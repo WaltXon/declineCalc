@@ -10,67 +10,95 @@ var global = {
 	"useDefault": "",
 }
 
+
 var wellDefault = {
   	"initGasProduction": "1000.0",
-	"initOilProduction": "100.0",
+	"initOilProduction": "200.0",
 	"initWaterProduction": "500.0",
 	"bFactorOil": "1.2",
-	"bFactorGas": "1.0",
+	"bFactorGas": "1.2",
 	"bFactorWater": "1.0",
 	"initGasDecline": "90",
 	"initOilDecline": "70",
 	"initWaterDecline": "90",
 	"timeStart": "",
 	"econLife": "10",
-	"afeCost": "1000000.0",
-	"loeCost": "5000.0",
-	"production": [
+	"price": 
+		{		
+			"oil": "89.00",
+			"gas": "3.00"
+		},
+	"cost":
+		{
+			"drillAndComplete": "1000000.0",
+			"loe": "5000.0",
+			"taxes": "8.0"
+		},
+	"production": 
 		{
 			"oil": [],
+			"cumOil": [],
 			"gas": [],
+			"cumGas": [],
 			"water": [],
-			"month": []
-		}],
-	"revenue": [
-		{
-			"oil": [],
-			"gas": [],
-			"water": [],
+			"cumWater": [],
 			"month":[]
+
+		},
+	"revenue": 
+		{
+			"oil": [],
+			"gas": [],
+			"water": [],
+			"month":[], 
+			"netCashFlow": []
 		}
-	]
+	
 }
 
 var wellUser = {
-  	"initGasProduction": "",
-	"initOilProduction": "",
-	"initWaterProduction": "",
-	"bFactorOil": "",
-	"bFactorGas": "",
-	"bFactorWater": "",
-	"initGasDecline": "",
-	"initOilDecline": "",
-	"initWaterDecline": "",
+ 	"initGasProduction": "1000.0",
+	"initOilProduction": "200.0",
+	"initWaterProduction": "500.0",
+	"bFactorOil": "1.2",
+	"bFactorGas": "1.2",
+	"bFactorWater": "1.0",
+	"initGasDecline": "90",
+	"initOilDecline": "70",
+	"initWaterDecline": "90",
 	"timeStart": "",
-	"econLife": "",
-	"afeCost": "1000000.0",
-	"loeCost": "5000.0",
-	"production": [
+	"econLife": "10",
+	"price": 
+		{		
+			"oil": "89.00",
+			"gas": "3.00"
+		},
+	"cost":
+		{
+			"drillAndComplete": "1000000.0",
+			"loe": "5000.0",
+			"taxes": "8.0"
+		},
+	"production": 
 		{
 			"oil": [],
+			"cumOil": [],
 			"gas": [],
+			"cumGas": [],
 			"water": [],
+			"cumWater": [],
 			"month":[]
 
-		}],
-	"revenue": [
+		},
+	"revenue": 
 		{
 			"oil": [],
 			"gas": [],
 			"water": [],
-			"month":[]
+			"month":[], 
+			"netCashFlow": []
 		}
-	]
+	
 }
 /*Function Definitinos
 =========================================================
@@ -82,13 +110,37 @@ function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 	var qi = initProduction;
 	var Di = initDecline/1200.0;
 	var b = bFactor;
-	var tempStep = (1+b*Di*timeFromStart);
+	var denominator = (1+b*Di*timeFromStart);
 	var inverseB = 1.0/b;
-	var q = Math.pow((qi / tempStep), inverseB);
+	var q = qi / Math.pow(denominator, inverseB);
 	return q;
 }
 
+function hyperCumulative(initProduction, initDecline, bFactor, timeFromStart) {
+	var qCum = 0;
+	var qi = initProduction;
+	var Di = initDecline/1200.0;
+	var b = bFactor;
+	var group1 = ((1-b)*Di);
+	var group2 = (1+b*Di*timeFromStart);
+	var group3 = (1-(1.0/b));
+	var qCum = (qi / group1) * (1 - (Math.pow(group2, group3)));
+	return qCum;	
+}
 
+function calcPriceStrip(yearPrices, months) {
+	var strip = [];
+	var year = 0;
+	for (var i=0; i<months.length; i++){
+		while (year <= months.length) {
+			if (months[i] % 12 == 0){
+			year++;
+			}
+		}
+		strip.push(yearPrices[year]);	
+	}
+	return strip;
+}
 /*Set Values on Input Change Events
 =========================================================
 */
@@ -153,26 +205,26 @@ $('#econLife').change(function() {
 });
 $('#oilPrice').change(function() {
   
-	wellUser.oilPrice = parseFloat(this.value);
-  	console.log("oilPrice set = " + wellUser.oilPrice.toString() + " : Type = " + typeof wellUser.oilPrice);
+	wellUser.price.oil = parseFloat(this.value);
+  	console.log("price.oil set = " + wellUser.price.oil.toString() + " : Type = " + typeof wellUser.price.oil);
 
 });
 $('#gasPrice').change(function() {
   
-	wellUser.gasPrice = parseFloat(this.value);
-  	console.log("gasPrice set = " + wellUser.gasPrice.toString() + " : Type = " + typeof wellUser.gasPrice);
+	wellUser.price.gas = parseFloat(this.value);
+  	console.log("price.gas set = " + wellUser.price.gas.toString() + " : Type = " + typeof wellUser.price.gas);
 
 });
 $('#loeCost').change(function() {
   
-	wellUser.loeCost = parseFloat(this.value);
-  	console.log("loeCost set = " + wellUser.loeCost.toString() + " : Type = " + typeof wellUser.loeCost);
+	wellUser.cost.loe = parseFloat(this.value);
+  	console.log("cost.loe set = " + wellUser.cost.loe.toString() + " : Type = " + typeof wellUser.cost.loe);
 
 });
-$('#afeCost').change(function() {
+$('#drillAndCompleteCost').change(function() {
   
-	wellUser.afeCost = parseFloat(this.value);
-  	console.log("afeCost set = " + wellUser.afeCost.toString() + " : Type = " + typeof wellUser.afeCost);
+	wellUser.cost.drillAndComplete = parseFloat(this.value);
+  	console.log("cost.drillAndComplete set = " + wellUser.cost.drillAndComplete.toString() + " : Type = " + typeof wellUser.cost.drillAndComplete);
 
 });
 
@@ -191,8 +243,24 @@ $('#useDefault').click(function() {
   			wellDefault.initOilDecline,
   			wellDefault.bFactorOil,
   			t);
-  		wellDefault.production[0].oil.push(oilProd);
-  		wellDefault.production[0].month.push(t);
+  		var cumOil = hyperCumulative(wellDefault.initOilProduction,
+  			wellDefault.initOilDecline,
+  			wellDefault.bFactorOil,
+  			t);
+  		var gasProd = hyperDecline(wellDefault.initGasProduction,
+  			wellDefault.initGasDecline,
+  			wellDefault.bFactorGas,
+  			t);
+  		var cumGas = hyperCumulative(wellDefault.initGasProduction,
+  			wellDefault.initGasDecline,
+  			wellDefault.bFactorGas,
+  			t);
+  		wellDefault.production.oil.push(oilProd);
+  		wellDefault.production.cumOil.push(cumOil);
+  		wellDefault.production.gas.push(gasProd);
+  		wellDefault.production.cumGas.push(cumGas);
+  		wellDefault.production.month.push(t);
+ 
   	}
   console.log("wellDefault Production = " + wellDefault.production);
   drawGraph(wellDefault.production);
@@ -210,8 +278,23 @@ $('#processData').click(function() {
   			wellUser.initOilDecline,
   			wellUser.bFactorOil,
   			t);
-  		wellUser.production[0].oil.push(oilProd);
-  		wellUser.production[0].month.push(t);
+  		var cumOil = hyperCumulative(wellUser.initOilProduction,
+  			wellUser.initOilDecline,
+  			wellUser.bFactorOil,
+  			t);
+  	  	var gasProd = hyperDecline(wellUser.initGasProduction,
+  			wellUser.initGasDecline,
+  			wellUser.bFactorGas,
+  			t);
+  		var cumGas = hyperCumulative(wellUser.initGasProduction,
+  			wellUser.initGasDecline,
+  			wellUser.bFactorGas,
+  			t);
+  		wellUser.production.oil.push(oilProd);
+  		wellUser.production.cumOil.push(cumOil);
+  	  	wellUser.production.gas.push(gasProd);
+  		wellUser.production.cumGas.push(cumGas);
+  		wellUser.production.month.push(t);
   	}
   console.log("wellUser Production = " + wellUser.production);
   drawGraph(wellUser.production);
@@ -224,8 +307,13 @@ $('#processData').click(function() {
 */
 
 function wellReset(well){
-	well.production[0].oil = [];
-	well.production[0].month = [];
+	well.production.oil = [];
+	well.production.cumOil = [];
+	well.production.gas = [];
+	well.production.cumGas = [];
+	well.production.water = [];
+	well.production.cumWater = [];
+	well.production.month = [];
 }
 
 function drawGraph (production) { 
@@ -238,21 +326,21 @@ function drawGraph (production) {
 		width = $("#graph").width() - margin.top - margin.bottom;
 	
 	var data = [];
-	for (var i=0; i < d3.max(production[0].month); i++){
-		data.push([production[0].month[i], production[0].oil[i]]);
+	for (var i=0; i < d3.max(production.month); i++){
+		data.push([production.month[i], production.oil[i]]);
 	}
 	console.log(data);
-	console.log(d3.max(production[0].oil));
-	console.log(d3.max(production[0].month));
+	console.log(d3.max(production.oil));
+	console.log(d3.max(production.month));
 
 	var parseDate = d3.time.format("%Y%m%d").parse;
 
 	var x = d3.scale.linear().
-		domain([0, d3.max(production[0].month)]). // your data minimum and maximum
+		domain([0, d3.max(production.month)]). // your data minimum and maximum
 		range([0, width]); // the pixels to map to, e.g., the width of the diagram.
 
 	var y = d3.scale.log()
-		.domain([1, d3.max(production[0].oil)*10.0])
+		.domain([1, d3.max(production.oil)*10.0])
 		.range([height, 0]);
 
 	var xAxis = d3.svg.axis()
@@ -337,10 +425,33 @@ function drawGraph (production) {
 function populateProdTable(well) {
 	$('#prodTable tbody tr').not(':first').not(':last').remove();
 	var html = '';
-	console.log("welL.loeCost = " + well.loeCost);
+	console.log("well.cost.loe = " + well.cost.loe);
 	console.log("well = " + well);
-	for(var i = 0; i < well.production[0].month.length; i++) {
-            html += '<tr><td>' + "" + '</td><td>' + well.production[0].month[i] + '</td><td>' + "" + '</td><td>' + "" + '</td><td>' + well.loeCost + '</td><td>' + Math.round(well.production[0].oil[i]*100)/100+ '</td><td>' + "" + '</td><td>' + "" + '</td><td>' + "" + '</td><td>' + "" + '</td></tr>';
+	var ncf = 0;
+	for(var i = 0; i < well.production.month.length; i++) {
+        /*var year = function () {
+        	if ((well.production.month[i]+1)/12.0 <= 1) {return 1;}
+        	else { return Math.floor((well.production.month[i]+1)/12.0)+1;}
+        } //BROKEN */
+        var year = Math.round(well.production.month[i]/12.0*10)/10;
+        var months = well.production.month[i]+1;
+        var spotOil = Math.round(well.production.oil[i]*100)/100;
+        var cOil = Math.round(well.production.cumOil[i]*100)/100;
+        var spotGas = Math.round(well.production.gas[i]*100)/100;
+        var cGas = Math.round(well.production.cumGas[i]*100)/100;
+        var oilP = well.price.oil;
+        var gasP = well.price.gas;
+        var oilRev = Math.round((well.production.cumOil[i]-well.production.cumOil[i-1])*well.price.oil*100)/100;
+        var gasRev = Math.round((well.production.cumGas[i]-well.production.cumGas[i-1])*well.price.gas*100)/100;
+        var combRev = Math.round((((well.production.cumOil[i]-well.production.cumOil[i-1])*well.price.oil)+((well.production.cumGas[i]-well.production.cumGas[i-1])*well.price.gas))*100)/100;
+        var mCost = Math.round(well.cost.loe*100)/100;
+        var dcCost = Math.round(well.cost.drillAndComplete*100)/100.;
+        var tax = Math.round(((well.cost.taxes/100.0) * combRev)*100)/100;
+        if (i == 0) {ncf = -dcCost;}
+        else{ncf += Math.round((combRev - mCost - tax)*100)/100;}
+
+        html += '<tr><td>' + year + '</td><td>' + months + '</td><td>' + spotOil + '</td><td>' + cOil + '</td><td>' + spotGas + '</td><td>' + cGas + '</td><td>' + oilP + '</td><td>' + gasP + '</td><td>' + oilRev + '</td><td>' + gasRev + '</td><td>' + combRev + '</td><td>' + mCost + '</td><td>' + dcCost +'</td><td>' + tax + '</td><td>' + ncf + '</td></tr>';
+
 		}    
 		   
 	$('#prodTable tbody tr').first().after(html);
