@@ -116,14 +116,15 @@ function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
 	return q;
 }
 
-function hyperCumulative(initProduction, initDecline, bFactor, timeFromStart) {
+function hyperCumulative(initProduction, initDecline, currProd, bFactor) {
 	var qCum = 0;
+	var qt = currProd;
 	var qi = initProduction;
 	var Di = initDecline/1200.0;
 	var b = bFactor;
 	var group1 = ((1-b)*Di);
-	var group2 = (1+b*Di*timeFromStart);
-	var group3 = (1-(1.0/b));
+	var group2 = (qt/qi);
+	var group3 = (1-b);
 	var qCum = (qi / group1) * (1 - (Math.pow(group2, group3)));
 	return qCum;	
 }
@@ -140,6 +141,17 @@ function calcPriceStrip(yearPrices, months) {
 		strip.push(yearPrices[year]);	
 	}
 	return strip;
+}
+
+function dcf(cashFlow, discountRate, intRate, timeInYears){
+	var dcf = 0;
+	for (var i=0; i<cashFlow.length; i++){
+		var temp = cashFlow / Math.pow((1+intRate), i+1);
+		dcf += temp;
+	}
+
+	var fv = dcf * Math.pow((1+intRate), timeInYears); 
+	var dpv = fv * Math.pow((1-discountRate), timeInYears);
 }
 /*Set Values on Input Change Events
 =========================================================
@@ -243,18 +255,18 @@ $('#useDefault').click(function() {
   			wellDefault.initOilDecline,
   			wellDefault.bFactorOil,
   			t);
-  		var cumOil = hyperCumulative(wellDefault.initOilProduction,
+  		var cumOil = hyperCumulative(wellDefault.initOilProduction*30,
   			wellDefault.initOilDecline,
-  			wellDefault.bFactorOil,
-  			t);
+  			oilProd*30,
+  			wellDefault.bFactorOil);
   		var gasProd = hyperDecline(wellDefault.initGasProduction,
   			wellDefault.initGasDecline,
   			wellDefault.bFactorGas,
   			t);
-  		var cumGas = hyperCumulative(wellDefault.initGasProduction,
+  		var cumGas = hyperCumulative(wellDefault.initGasProduction*30,
   			wellDefault.initGasDecline,
-  			wellDefault.bFactorGas,
-  			t);
+  			gasProd*30,
+  			wellDefault.bFactorGas);
   		wellDefault.production.oil.push(oilProd);
   		wellDefault.production.cumOil.push(cumOil);
   		wellDefault.production.gas.push(gasProd);
@@ -278,18 +290,18 @@ $('#processData').click(function() {
   			wellUser.initOilDecline,
   			wellUser.bFactorOil,
   			t);
-  		var cumOil = hyperCumulative(wellUser.initOilProduction,
+  		var cumOil = hyperCumulative(wellUser.initOilProduction*30,
   			wellUser.initOilDecline,
-  			wellUser.bFactorOil,
-  			t);
+  			oilProd*30,
+  			wellUser.bFactorOil);
   	  	var gasProd = hyperDecline(wellUser.initGasProduction,
   			wellUser.initGasDecline,
   			wellUser.bFactorGas,
   			t);
-  		var cumGas = hyperCumulative(wellUser.initGasProduction,
+  		var cumGas = hyperCumulative(wellUser.initGasProduction*30,
   			wellUser.initGasDecline,
-  			wellUser.bFactorGas,
-  			t);
+  			gasProd*30,
+  			wellUser.bFactorGas);
   		wellUser.production.oil.push(oilProd);
   		wellUser.production.cumOil.push(cumOil);
   	  	wellUser.production.gas.push(gasProd);
@@ -430,14 +442,14 @@ function populateProdTable(well) {
 	var html = '';
 	console.log("well.cost.loe = " + well.cost.loe);
 	console.log("well = " + well);
-	var ncf = 0;
+	var ndcf = 0;
 	for(var i = 0; i < well.production.month.length; i++) {
         /*var year = function () {
         	if ((well.production.month[i]+1)/12.0 <= 1) {return 1;}
         	else { return Math.floor((well.production.month[i]+1)/12.0)+1;}
         } //BROKEN */
         var year = Math.round(well.production.month[i]/12.0*10)/10;
-        var months = well.production.month[i]+1;
+        var months = well.production.month[i];
         var spotOil = Math.round(well.production.oil[i]*100)/100;
         var cOil = Math.round(well.production.cumOil[i]*100)/100;
         var spotGas = Math.round(well.production.gas[i]*100)/100;
@@ -450,10 +462,11 @@ function populateProdTable(well) {
         var mCost = Math.round(well.cost.loe*100)/100;
         var dcCost = Math.round(well.cost.drillAndComplete*100)/100.;
         var tax = Math.round(((well.cost.taxes/100.0) * combRev)*100)/100;
-        if (i == 0) {ncf = -Math.round(dcCost*100)/100;}
-        else{ncf += Math.round((combRev - mCost - tax)*100)/100;}
+        var udcf = Math.round((combRev - mCost - tax)*100)/100;
+        if (i == 0) {ndcf = -Math.round(dcCost*100)/100;}
+        else{ndcf += Math.round((combRev - mCost - tax)*100)/100;}
 
-        html += '<tr><td>' + year + '</td><td>' + months + '</td><td>' + spotOil + '</td><td>' + cOil + '</td><td>' + spotGas + '</td><td>' + cGas + '</td><td>' + oilP + '</td><td>' + gasP + '</td><td>' + oilRev + '</td><td>' + gasRev + '</td><td>' + combRev + '</td><td>' + mCost + '</td><td>' + dcCost +'</td><td>' + tax + '</td><td>' + ncf + '</td></tr>';
+        html += '<tr><td>' + year + '</td><td>' + months + '</td><td>' + spotOil + '</td><td>' + cOil + '</td><td>' + spotGas + '</td><td>' + cGas + '</td><td>' + oilP + '</td><td>' + gasP + '</td><td>' + oilRev + '</td><td>' + gasRev + '</td><td>' + combRev + '</td><td>' + mCost + '</td><td>' + dcCost +'</td><td>' + tax + '</td><td>' + udcf + '</td><td>' + ndcf + '</td></tr>';
 
 		}    
 		   
