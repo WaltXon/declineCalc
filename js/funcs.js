@@ -5,6 +5,13 @@
 // Di = nominal annual decline
 // b = b-factor
 // time = time in months
+//TODO: SPECIAL CASE FOR ZERO TO ONE MONTH
+var tqi = 100;
+var tDi = .5;
+var tb = .9;
+var tstart = 0;
+var tend = 12;
+
 
 function hyperbolicMonthlySpotRate (qi, Di, b, time) {
 	var q = 0;
@@ -13,7 +20,7 @@ function hyperbolicMonthlySpotRate (qi, Di, b, time) {
 	return q;
 }
 
-console.log(hyperbolicMonthlySpotRate (100, .5, .9, 2));
+console.log(hyperbolicMonthlySpotRate (tqi, tDi, tb, 2));
 
 
 function hyperbolicCumMonthProduction(qi, Di, b, time) {
@@ -29,4 +36,18 @@ function hyperbolicCumMonthProduction(qi, Di, b, time) {
 	return NpFinal;
 }
 
-console.log(hyperbolicCumMonthProduction(100, .5, .9, 2));
+console.log(hyperbolicCumMonthProduction(tqi, tDi, tb, 2));
+
+function hyperbolicMultiMonthCumProduction(qi, Di, b, start, end) {
+	for(var t=start; t<=end; t++){
+		var q = hyperbolicMonthlySpotRate (qi, Di, b, t);
+		var Np = hyperbolicCumMonthProduction(qi, Di, b, t);
+		console.log("TIME = " + t)
+		console.log("SPOT = " + q);
+		console.log("CUM  = " + Np);
+
+	}
+
+}
+
+hyperbolicMultiMonthCumProduction(tqi, tDi, tb, tstart, tend);
