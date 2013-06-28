@@ -60,15 +60,16 @@ function hyperbolicCumMonthProduction(qi, Di, b, time) {
 	var NpFinal = 0; 
 	var days = 0;
 	//ONLY WORKS FOR FIRST YEAR!!!!!
-	if (time ==2){
-		days=28;
-	}else if (time == 8){
-		days = 31;
-	}else if (time % 2 == 0) {
-		days = 30;
-	}else {
-		days = 31;
-	}
+	// if (time ==2){
+	// 	days=28;
+	// }else if (time == 8){
+	// 	days = 31;
+	// }else if (time % 2 == 0) {
+	// 	days = 30;
+	// }else {
+	// 	days = 31;
+	// }
+	days = 365.0/12.0;
 	//console.log("days var = " + days);
 	Np1 = ((Math.pow(qi, b) / (((1-b)*Di_month))) * (Math.pow(qi, (1-b)) - Math.pow(q1, (1-b))));
 	Np1 *= days;
