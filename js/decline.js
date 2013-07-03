@@ -3,240 +3,94 @@ Walt Nixon
 May 2013
 */
 
-/*JSON Definitions
-=========================================================
-*/
-var global = {
-	"useDefault": "",
-}
 
 
-var wellDefault = {
-  	"initGasProduction": "1000.0",
-	"initOilProduction": "200.0",
-	"initWaterProduction": "500.0",
-	"bFactorOil": "1.2",
-	"bFactorGas": "1.2",
-	"bFactorWater": "1.0",
-	"initGasDecline": "90",
-	"initOilDecline": "70",
-	"initWaterDecline": "90",
-	"timeStart": "",
-	"econLife": "10",
-	"price": 
-		{		
-			"oil": "89.00",
-			"gas": "3.00"
-		},
-	"cost":
-		{
-			"drillAndComplete": "1000000.0",
-			"loe": "5000.0",
-			"taxes": "8.0"
-		},
-	"production": 
-		{
-			"oil": [],
-			"cumOil": [],
-			"gas": [],
-			"cumGas": [],
-			"water": [],
-			"cumWater": [],
-			"month":[]
-
-		},
-	"revenue": 
-		{
-			"oil": [],
-			"gas": [],
-			"water": [],
-			"month":[], 
-			"netCashFlow": []
-		}
-	
-}
-
-var wellUser = {
- 	"initGasProduction": "1000.0",
-	"initOilProduction": "200.0",
-	"initWaterProduction": "500.0",
-	"bFactorOil": "1.2",
-	"bFactorGas": "1.2",
-	"bFactorWater": "1.0",
-	"initGasDecline": "90",
-	"initOilDecline": "70",
-	"initWaterDecline": "90",
-	"timeStart": "",
-	"econLife": "10",
-	"price": 
-		{		
-			"oil": "89.00",
-			"gas": "3.00"
-		},
-	"cost":
-		{
-			"drillAndComplete": "1000000.0",
-			"loe": "5000.0",
-			"taxes": "8.0"
-		},
-	"production": 
-		{
-			"oil": [],
-			"cumOil": [],
-			"gas": [],
-			"cumGas": [],
-			"water": [],
-			"cumWater": [],
-			"month":[]
-
-		},
-	"revenue": 
-		{
-			"oil": [],
-			"gas": [],
-			"water": [],
-			"month":[], 
-			"netCashFlow": []
-		}
-	
-}
-/*Function Definitinos
-=========================================================
- hyperbolic decline q=qi*(1+b*Di*t)^(-1/b) when b= 0 the equation will become for exponential decline curve 
- exponential decline q=qi*exp(-D*t)
-*/
-function hyperDecline (initProduction, initDecline, bFactor, timeFromStart) {
-	var q = 0;
-	var qi = initProduction;
-	var Di = initDecline/1200.0;
-	var b = bFactor;
-	var denominator = (1+b*Di*timeFromStart);
-	var inverseB = 1.0/b;
-	var q = qi / Math.pow(denominator, inverseB);
-	return q;
-}
-
-function hyperCumulative(initProduction, initDecline, currProd, bFactor) {
-	var qCum = 0;
-	var qt = currProd;
-	var qi = initProduction;
-	var Di = initDecline/1200.0;
-	var b = bFactor;
-	var group1 = ((1-b)*Di);
-	var group2 = (qt/qi);
-	var group3 = (1-b);
-	var qCum = (qi / group1) * (1 - (Math.pow(group2, group3)));
-	return qCum;	
-}
-
-function calcPriceStrip(yearPrices, months) {
-	var strip = [];
-	var year = 0;
-	for (var i=0; i<months.length; i++){
-		while (year <= months.length) {
-			if (months[i] % 12 == 0){
-			year++;
-			}
-		}
-		strip.push(yearPrices[year]);	
-	}
-	return strip;
-}
-
-function dcf(cashFlow, discountRate, intRate, timeInYears){
-	var dcf = 0;
-	for (var i=0; i<cashFlow.length; i++){
-		var temp = cashFlow / Math.pow((1+intRate), i+1);
-		dcf += temp;
-	}
-
-	var fv = dcf * Math.pow((1+intRate), timeInYears); 
-	var dpv = fv * Math.pow((1-discountRate), timeInYears);
-}
 /*Set Values on Input Change Events
 =========================================================
 */
 $('#initOilProduction').change(function() {
   
-	wellUser.initOilProduction = parseFloat(this.value);
-  	console.log("initOilProduction set = " + wellUser.initOilProduction.toString() + " : Type = " + typeof wellUser.initOilProduction);
+	well.set('initOilProduction', parseFloat(this.value));
+  	console.log("initOilProduction set = " + well.get('initOilProduction') + " : Type = " + typeof well.get('initOilProduction'));
 
 });
 
 $('#initOilDecline').change(function() {
   
-	wellUser.initOilDecline = parseFloat(this.value);
-  	console.log("initOilDecline set = " + wellUser.initOilDecline.toString() + " : Type = " + typeof wellUser.initOilDecline);
+	well.set('initOilDecline', parseFloat(this.value));
+  	console.log("initOilDecline set = " + well.get('initOilDecline') + " : Type = " + typeof well.get('initOilDecline'));
 
 });
 $('#bFactorOil').change(function() {
   
-	wellUser.bFactorOil = parseFloat(this.value);
-  	console.log("bFactorOil set = " + wellUser.bFactorOil.toString() + " : Type = " + typeof wellUser.bFactorOil);
+	well.set('bFactorOil', parseFloat(this.value));
+  	console.log("bFactorOil set = " + well.get('bFactorOil') + " : Type = " + typeof well.get('bFactorOil'));
 
 });
 $('#initGasProduction').change(function() {
   
-	wellUser.initGasProduction = parseFloat(this.value);
-  	console.log("initGasProduction set = " + wellUser.initGasProduction.toString() + " : Type = " + typeof wellUser.initGasProduction);
+	well.set('initGasProduction', parseFloat(this.value));
+  	console.log("initGasProduction set = " + well.get('initGasProduction') + " : Type = " + typeof well.get('initGasProduction'));
 
 });
 $('#initGasDecline').change(function() {
   
-	wellUser.initGasDecline = parseFloat(this.value);
-  	console.log("initGasDecline set = " + wellUser.initGasDecline.toString() + " : Type = " + typeof wellUser.initGasDecline);
+	well.set('initGasDecline', parseFloat(this.value));
+  	console.log("initGasDecline set = " + well.get('initGasDecline') + " : Type = " + typeof well.get('initGasDecline'));
 
 });
 $('#bFactorGas').change(function() {
   
-	wellUser.bFactorGas = parseFloat(this.value);
-  	console.log("bFactorGas set = " + wellUser.bFactorGas.toString() + " : Type = " + typeof wellUser.bFactorGas);
+	well.set('bFactorGas', parseFloat(this.value);
+  	console.log("bFactorGas set = " + well.get('bFactorGas') + " : Type = " + typeof well.get('bFactorGas'));
 
 });
 $('#initWaterProduction').change(function() {  
-	wellUser.initWaterProduction = parseFloat(this.value);
-  	console.log("initWaterProduction set = " + wellUser.initWaterProduction.toString() + " : Type = " + typeof wellUser.initWaterProduction);
+
+	well.set('initWaterProduction', parseFloat(this.value));
+  	console.log("initWaterProduction set = " + well.get('initWaterProduction') + " : Type = " + typeof well.get('initWaterProduction'));
+
 });
 $('#initWaterDecline').change(function() {
   
-	wellUser.initWaterDecline = parseFloat(this.value);
-  	console.log("initWaterDecline set = " + wellUser.initWaterDecline.toString() + " : Type = " + typeof wellUser.initWaterDecline);
+	well.set('initWaterDecline', parseFloat(this.value));
+  	console.log("initWaterDecline set = " + well.get('initWaterDecline') + " : Type = " + typeof well.get('initWaterDecline'));
 
 });
 $('#bFactorWater').change(function() {
   
-	wellUser.bFactorWater = parseFloat(this.value);
-  	console.log("bFactorWater set = " + wellUser.bFactorWater.toString() + " : Type = " + typeof wellUser.bFactorWater);
+	well.get('bFactorWater', parseFloat(this.value));
+  	console.log("bFactorWater set = " + well.get('bFactorWater') + " : Type = " + typeof well.get('bFactorWater'));
 
 });
 $('#econLife').change(function() {
   
-	wellUser.econLife = parseFloat(this.value);
-  	console.log("econLife set = " + wellUser.econLife.toString() + " : Type = " + typeof wellUser.econLife);
+	well.set('econLife', parseFloat(this.value));
+  	console.log("econLife set = " + well.set('econLife') + " : Type = " + typeof well.set('econLife'));
 
 });
 $('#oilPrice').change(function() {
   
-	wellUser.price.oil = parseFloat(this.value);
-  	console.log("price.oil set = " + wellUser.price.oil.toString() + " : Type = " + typeof wellUser.price.oil);
+	well.set('price_oil', parseFloat(this.value));
+  	console.log("price_oil set = " + well.get('price_oil') + " : Type = " + typeof well.get('price_oil'));
 
 });
 $('#gasPrice').change(function() {
   
-	wellUser.price.gas = parseFloat(this.value);
-  	console.log("price.gas set = " + wellUser.price.gas.toString() + " : Type = " + typeof wellUser.price.gas);
+	well.set('price_gas', parseFloat(this.value));
+  	console.log("price_gas set = " + well.get('price_gas') + " : Type = " + typeof well.get('price_gas'));
 
 });
 $('#loeCost').change(function() {
   
-	wellUser.cost.loe = parseFloat(this.value);
-  	console.log("cost.loe set = " + wellUser.cost.loe.toString() + " : Type = " + typeof wellUser.cost.loe);
+	well.set('cost_loe', parseFloat(this.value));
+  	console.log("cost.loe set = " + well.get('cost_loe') + " : Type = " + typeof well.get('cost_loe'));
 
 });
 $('#drillAndCompleteCost').change(function() {
   
-	wellUser.cost.drillAndComplete = parseFloat(this.value);
-  	console.log("cost.drillAndComplete set = " + wellUser.cost.drillAndComplete.toString() + " : Type = " + typeof wellUser.cost.drillAndComplete);
+	well.set('cost_drillAndComplete', parseFloat(this.value));
+  	console.log("cost.drillAndComplete set = " + well.get('cost_drillAndComplete') + " : Type = " + typeof well.get('cost_drillAndComplete'));
 
 });
 
@@ -246,37 +100,24 @@ $('#drillAndCompleteCost').change(function() {
 
 $('#useDefault').click(function() {
 	console.log("useDefault click event handler fired");
-	global.useDefault = "true";
-	console.log("global.useDefault set = " + global.useDefault);
-	wellReset(wellDefault);
-  	for (var t=0; t<parseFloat(wellDefault.econLife)*12; t++){
+	//Create New Well Instaance
+	var well = new Well()
+  	for (var t=0; t<parseFloat(well.econLife)*12; t++){
   		// console.log("in for loop");
-  		var oilProd = hyperDecline(wellDefault.initOilProduction,
-  			wellDefault.initOilDecline,
-  			wellDefault.bFactorOil,
-  			t);
-  		var cumOil = hyperCumulative(wellDefault.initOilProduction*30,
-  			wellDefault.initOilDecline,
-  			oilProd*30,
-  			wellDefault.bFactorOil);
-  		var gasProd = hyperDecline(wellDefault.initGasProduction,
-  			wellDefault.initGasDecline,
-  			wellDefault.bFactorGas,
-  			t);
-  		var cumGas = hyperCumulative(wellDefault.initGasProduction*30,
-  			wellDefault.initGasDecline,
-  			gasProd*30,
-  			wellDefault.bFactorGas);
-  		wellDefault.production.oil.push(oilProd);
-  		wellDefault.production.cumOil.push(cumOil);
-  		wellDefault.production.gas.push(gasProd);
-  		wellDefault.production.cumGas.push(cumGas);
-  		wellDefault.production.month.push(t);
+  		var oilProd = hyperbolicMonthlySpotRate (well.initOilProduction, well.initOilDecline, well.bFactorOil, t);
+  		var cumOil = hyperbolicCumMonthProduction(well.initOilProduction, well.initOilDecline, well.bFactorOil, t);
+  		var gasProd = hyperbolicMonthlySpotRate (well.initGasProduction, well.initGasDecline, well.bFactorGas, t);
+  		var cumGas = hyperbolicCumMonthProduction(well.initGasProduction, well.initGasDecline, well.bFactorGas, t);
+  		well.set('production_oil', oilProd);
+  		well.set('production_cumOil',cumOil);
+  		well.set('production_gas', gasProd);
+  		well.set('production_cumGas', cumGas);
+  		well.set('production_month', t);
  
   	}
-  console.log("wellDefault Production = " + wellDefault.production);
+  console.log("wellDefault Production = " + well.get('production_oil');
   drawGraph(wellDefault.production);
-  populateProdTable(wellDefault);
+  populateProdTable(well);
   return false;
 });
 
