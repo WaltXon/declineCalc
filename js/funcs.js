@@ -76,6 +76,19 @@ function hyperbolicCumMonthProduction(qi, Di, b, time) {
 	return NpFinal;
 }
 
+function hyperbolicCumProduction(qi, Di, b, time) {
+	var q = hyperbolicMonthlySpotRate (qi, Di, b, time);
+	var Np = 0;
+	var Di_month = Di/12.0;
+	var NpFinal = 0; 
+	var days = 0;
+	days = 365.0/12.0;
+	//console.log("days var = " + days);
+	Np = ((Math.pow(qi, b) / (((1-b)*Di_month))) * (Math.pow(qi, (1-b)) - Math.pow(q, (1-b))));
+	Np *= days;
+	
+	return Np;
+}
 // console.log(hyperbolicCumMonthProduction(tqi, tDi, tb, 2));
 
 function hyperbolicMultiMonthCumProduction(qi, Di, b, start, end) {
