@@ -2,101 +2,137 @@
 Walt Nixon
 May 2013
 */
-
-
-
-/*Set Values on Input Change Events
+/*Set Click Events 
 =========================================================
 */
-$('#initOilProduction').change(function() {
-  
-	well.set('initOilProduction', parseFloat(this.value));
-  	console.log("initOilProduction set = " + well.get('initOilProduction') + " : Type = " + typeof well.get('initOilProduction'));
+$('#newWell').click(function(){
+	//INSTIATIATE A NEW WELL
+	var well = new Well();
+	/*Set Values on Input Change Events
+	=========================================================
+	*/
+	$('#initOilProduction').change(function() {
+	  
+		well.set('initOilProduction', parseFloat(this.value));
+	  	console.log("initOilProduction set = " + well.get('initOilProduction') + " : Type = " + typeof well.get('initOilProduction'));
+
+	});
+	$('#initOilDecline').change(function() {
+	  
+		well.set('initOilDecline', parseFloat(this.value));
+	  	console.log("initOilDecline set = " + well.get('initOilDecline') + " : Type = " + typeof well.get('initOilDecline'));
+
+	});
+	$('#bFactorOil').change(function() {
+	  
+		well.set('bFactorOil', parseFloat(this.value));
+	  	console.log("bFactorOil set = " + well.get('bFactorOil') + " : Type = " + typeof well.get('bFactorOil'));
+
+	});
+	$('#initGasProduction').change(function() {
+	  
+		well.set('initGasProduction', parseFloat(this.value));
+	  	console.log("initGasProduction set = " + well.get('initGasProduction') + " : Type = " + typeof well.get('initGasProduction'));
+
+	});
+	$('#initGasDecline').change(function() {
+	  
+		well.set('initGasDecline', parseFloat(this.value));
+	  	console.log("initGasDecline set = " + well.get('initGasDecline') + " : Type = " + typeof well.get('initGasDecline'));
+
+	});
+	$('#bFactorGas').change(function() {
+	  
+		well.set('bFactorGas', parseFloat(this.value));
+	  	console.log("bFactorGas set = " + well.get('bFactorGas') + " : Type = " + typeof well.get('bFactorGas'));
+
+	});
+	$('#initWaterProduction').change(function() {  
+
+		well.set('initWaterProduction', parseFloat(this.value));
+	  	console.log("initWaterProduction set = " + well.get('initWaterProduction') + " : Type = " + typeof well.get('initWaterProduction'));
+
+	});
+	$('#initWaterDecline').change(function() {
+	  
+		well.set('initWaterDecline', parseFloat(this.value));
+	  	console.log("initWaterDecline set = " + well.get('initWaterDecline') + " : Type = " + typeof well.get('initWaterDecline'));
+
+	});
+	$('#bFactorWater').change(function() {
+	  
+		well.get('bFactorWater', parseFloat(this.value));
+	  	console.log("bFactorWater set = " + well.get('bFactorWater') + " : Type = " + typeof well.get('bFactorWater'));
+
+	});
+	$('#econLife').change(function() {
+	  
+		well.set('econLife', parseFloat(this.value));
+	  	console.log("econLife set = " + well.set('econLife') + " : Type = " + typeof well.set('econLife'));
+
+	});
+	$('#oilPrice').change(function() {
+	  
+		well.set('price_oil', parseFloat(this.value));
+	  	console.log("price_oil set = " + well.get('price_oil') + " : Type = " + typeof well.get('price_oil'));
+
+	});
+	$('#gasPrice').change(function() {
+	  
+		well.set('price_gas', parseFloat(this.value));
+	  	console.log("price_gas set = " + well.get('price_gas') + " : Type = " + typeof well.get('price_gas'));
+
+	});
+	$('#loeCost').change(function() {
+	  
+		well.set('cost_loe', parseFloat(this.value));
+	  	console.log("cost.loe set = " + well.get('cost_loe') + " : Type = " + typeof well.get('cost_loe'));
+
+	});
+	$('#drillAndCompleteCost').change(function() {
+	  
+		well.set('cost_drillAndComplete', parseFloat(this.value));
+	  	console.log("cost.drillAndComplete set = " + well.get('cost_drillAndComplete') + " : Type = " + typeof well.get('cost_drillAndComplete'));
+
+	});
 
 });
-
-$('#initOilDecline').change(function() {
-  
-	well.set('initOilDecline', parseFloat(this.value));
-  	console.log("initOilDecline set = " + well.get('initOilDecline') + " : Type = " + typeof well.get('initOilDecline'));
-
+$('#save').click(function(){
+	// APPLY ENTERED VALUES TO MODEL
 });
-$('#bFactorOil').change(function() {
-  
-	well.set('bFactorOil', parseFloat(this.value));
-  	console.log("bFactorOil set = " + well.get('bFactorOil') + " : Type = " + typeof well.get('bFactorOil'));
-
-});
-$('#initGasProduction').change(function() {
-  
-	well.set('initGasProduction', parseFloat(this.value));
-  	console.log("initGasProduction set = " + well.get('initGasProduction') + " : Type = " + typeof well.get('initGasProduction'));
-
-});
-$('#initGasDecline').change(function() {
-  
-	well.set('initGasDecline', parseFloat(this.value));
-  	console.log("initGasDecline set = " + well.get('initGasDecline') + " : Type = " + typeof well.get('initGasDecline'));
-
-});
-$('#bFactorGas').change(function() {
-  
-	well.set('bFactorGas', parseFloat(this.value));
-  	console.log("bFactorGas set = " + well.get('bFactorGas') + " : Type = " + typeof well.get('bFactorGas'));
-
-});
-$('#initWaterProduction').change(function() {  
-
-	well.set('initWaterProduction', parseFloat(this.value));
-  	console.log("initWaterProduction set = " + well.get('initWaterProduction') + " : Type = " + typeof well.get('initWaterProduction'));
-
-});
-$('#initWaterDecline').change(function() {
-  
-	well.set('initWaterDecline', parseFloat(this.value));
-  	console.log("initWaterDecline set = " + well.get('initWaterDecline') + " : Type = " + typeof well.get('initWaterDecline'));
-
-});
-$('#bFactorWater').change(function() {
-  
-	well.get('bFactorWater', parseFloat(this.value));
-  	console.log("bFactorWater set = " + well.get('bFactorWater') + " : Type = " + typeof well.get('bFactorWater'));
-
-});
-$('#econLife').change(function() {
-  
-	well.set('econLife', parseFloat(this.value));
-  	console.log("econLife set = " + well.set('econLife') + " : Type = " + typeof well.set('econLife'));
-
-});
-$('#oilPrice').change(function() {
-  
-	well.set('price_oil', parseFloat(this.value));
-  	console.log("price_oil set = " + well.get('price_oil') + " : Type = " + typeof well.get('price_oil'));
-
-});
-$('#gasPrice').change(function() {
-  
-	well.set('price_gas', parseFloat(this.value));
-  	console.log("price_gas set = " + well.get('price_gas') + " : Type = " + typeof well.get('price_gas'));
-
-});
-$('#loeCost').change(function() {
-  
-	well.set('cost_loe', parseFloat(this.value));
-  	console.log("cost.loe set = " + well.get('cost_loe') + " : Type = " + typeof well.get('cost_loe'));
-
-});
-$('#drillAndCompleteCost').change(function() {
-  
-	well.set('cost_drillAndComplete', parseFloat(this.value));
-  	console.log("cost.drillAndComplete set = " + well.get('cost_drillAndComplete') + " : Type = " + typeof well.get('cost_drillAndComplete'));
-
+$('#useDefault').click(function(){
+	// APPLY DEFAULT VALUES TO MODEL AND DISPLAY IN MODAL
 });
 
+$('#processData').click(function() {
+	produce(well);
+});
+
+
+
+
+
+
+/*Reset Well Instance = Not currently used
+=========================================================
+*/
+
+function wellReset(well){
+	well.production_oil = [];
+	well.production_cumOil = [];
+	well.production_gas = [];
+	well.production_cumGas = [];
+	well.production_water = [];
+	well.production_cumWater = [];
+	well.production_month = [];
+}
+
+/*Create Production Information
+=========================================================
+*/
 
 function produce(well) {
-  	console.log("useDefault click event handler fired");
+  	console.log("produce function fired");
 
 	//wellReset(well);
 	var oilProd = [];
@@ -137,35 +173,6 @@ function produce(well) {
   	populateProdTable(well);
   	return false;
 }
-/*Set Click Events 
-=========================================================
-*/
-
-$('#useDefault').click(function(){
-	//Create New Well Instaance
-	var well = new Well();
-	produce(well);
-});
-
-
-$('#processData').click(function() {
-	//Create New Well Instaance
-	var well = new Well();
-	produce(well);
-	produce();
-});
-
-
-function wellReset(well){
-	well.production_oil = [];
-	well.production_cumOil = [];
-	well.production_gas = [];
-	well.production_cumGas = [];
-	well.production_water = [];
-	well.production_cumWater = [];
-	well.production_month = [];
-}
-
 /*Populate Detail Table 
 =========================================================
 */
@@ -212,6 +219,7 @@ function populateProdTable(well) {
 	$('#prodTable tbody tr').first().after(html);
 
 }
+
 
 /*D3 Graph Area 
 =========================================================

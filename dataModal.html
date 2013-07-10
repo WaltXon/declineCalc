@@ -8,12 +8,15 @@
 
 </head>
 <body>
+	
 	<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 			<h3 id="modalLabel">Well Data Entry</h3>
 		</div><!-- /header -->
 		<div class="modal-body">
+	  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data</button>
+			<button id="useDefault" type="button" class="btn btn-info pull-right" name="useDefault" value="">Use Default Values</button>
 			<form class="form-horizontal">
 			<div class="control-group">
 	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
@@ -31,7 +34,7 @@
 	  			<label class="control-label" for="bFactorOil">b-Factor (Oil) </label>
 	  			<div class="controls">
 	  				<input id="bFactorOil" type="text" name="bFactorOil" placeholder="b-Factor Oil Curve">	
-	  			</div>
+	  			</div>+
 				</div>
 			<div class="control-group">
 	  			<label class="control-label" for="initGasProduction">Initial Gas Production </label>
@@ -103,11 +106,6 @@
 		</div>
 	</div>
 
-
-	</div>
-		</div>
-				
-	</div><!-- End Page Wrap -->
 	<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
 	<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/underscore-min.js"></script>

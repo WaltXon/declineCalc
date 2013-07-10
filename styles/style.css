@@ -6,3 +6,12 @@ div.graph {
 .pageWrap {
 	padding: 0px 20px 0px 20px;
 }
+body .modal {
+    /* new custom width */
+    width: 700px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    margin-left: -320px;
+}
+.buttonGroup{
+	margin-top: 10px;
+}
