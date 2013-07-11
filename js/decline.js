@@ -7,7 +7,7 @@ May 2013
 */
 $('#newWell').click(function(){
 	//INSTIATIATE A NEW WELL
-	var well = new Well();
+	var well = new Well({wellId: 1, wellName: "NewWell"});
 	/*Set Values on Input Change Events
 	=========================================================
 	*/
@@ -96,6 +96,7 @@ $('#newWell').click(function(){
 
 	});
 
+
 });
 $('#save').click(function(){
 	// APPLY ENTERED VALUES TO MODEL
@@ -105,7 +106,7 @@ $('#useDefault').click(function(){
 });
 
 $('#processData').click(function() {
-	produce(well);
+	produce(well.fetch());
 });
 
 

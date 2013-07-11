@@ -1,5 +1,7 @@
 var Well = Backbone.Model.extend({
 	 	defaults: {
+	 		wellId: 0,
+	 		wellName: "Default",
 	 		initGasProduction: 1000.0,
 			initOilProduction: 200.0,
 			initWaterProduction: 500.0,
@@ -46,4 +48,8 @@ var Well = Backbone.Model.extend({
 	}); //End Well Model
 
 
+var WellList = Backbone.Collection.extend({
+	model: Well
+
+});
 
