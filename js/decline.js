@@ -2,111 +2,41 @@
 Walt Nixon
 May 2013
 */
+
+$(function(){
+
+
+// Create global well list 
+// --------------------------
+
+var Wells = new WellList();
+Wells.fetch();
+
 /*Set Click Events 
 =========================================================
+
+
 */
 $('#newWell').click(function(){
 	//INSTIATIATE A NEW WELL
-	var well = new Well({wellId: 1, wellName: "NewWell"});
-	/*Set Values on Input Change Events
-	=========================================================
-	*/
-	$('#initOilProduction').change(function() {
-	  
-		well.set('initOilProduction', parseFloat(this.value));
-	  	console.log("initOilProduction set = " + well.get('initOilProduction') + " : Type = " + typeof well.get('initOilProduction'));
-
-	});
-	$('#initOilDecline').change(function() {
-	  
-		well.set('initOilDecline', parseFloat(this.value));
-	  	console.log("initOilDecline set = " + well.get('initOilDecline') + " : Type = " + typeof well.get('initOilDecline'));
-
-	});
-	$('#bFactorOil').change(function() {
-	  
-		well.set('bFactorOil', parseFloat(this.value));
-	  	console.log("bFactorOil set = " + well.get('bFactorOil') + " : Type = " + typeof well.get('bFactorOil'));
-
-	});
-	$('#initGasProduction').change(function() {
-	  
-		well.set('initGasProduction', parseFloat(this.value));
-	  	console.log("initGasProduction set = " + well.get('initGasProduction') + " : Type = " + typeof well.get('initGasProduction'));
-
-	});
-	$('#initGasDecline').change(function() {
-	  
-		well.set('initGasDecline', parseFloat(this.value));
-	  	console.log("initGasDecline set = " + well.get('initGasDecline') + " : Type = " + typeof well.get('initGasDecline'));
-
-	});
-	$('#bFactorGas').change(function() {
-	  
-		well.set('bFactorGas', parseFloat(this.value));
-	  	console.log("bFactorGas set = " + well.get('bFactorGas') + " : Type = " + typeof well.get('bFactorGas'));
-
-	});
-	$('#initWaterProduction').change(function() {  
-
-		well.set('initWaterProduction', parseFloat(this.value));
-	  	console.log("initWaterProduction set = " + well.get('initWaterProduction') + " : Type = " + typeof well.get('initWaterProduction'));
-
-	});
-	$('#initWaterDecline').change(function() {
-	  
-		well.set('initWaterDecline', parseFloat(this.value));
-	  	console.log("initWaterDecline set = " + well.get('initWaterDecline') + " : Type = " + typeof well.get('initWaterDecline'));
-
-	});
-	$('#bFactorWater').change(function() {
-	  
-		well.get('bFactorWater', parseFloat(this.value));
-	  	console.log("bFactorWater set = " + well.get('bFactorWater') + " : Type = " + typeof well.get('bFactorWater'));
-
-	});
-	$('#econLife').change(function() {
-	  
-		well.set('econLife', parseFloat(this.value));
-	  	console.log("econLife set = " + well.set('econLife') + " : Type = " + typeof well.set('econLife'));
-
-	});
-	$('#oilPrice').change(function() {
-	  
-		well.set('price_oil', parseFloat(this.value));
-	  	console.log("price_oil set = " + well.get('price_oil') + " : Type = " + typeof well.get('price_oil'));
-
-	});
-	$('#gasPrice').change(function() {
-	  
-		well.set('price_gas', parseFloat(this.value));
-	  	console.log("price_gas set = " + well.get('price_gas') + " : Type = " + typeof well.get('price_gas'));
-
-	});
-	$('#loeCost').change(function() {
-	  
-		well.set('cost_loe', parseFloat(this.value));
-	  	console.log("cost.loe set = " + well.get('cost_loe') + " : Type = " + typeof well.get('cost_loe'));
-
-	});
-	$('#drillAndCompleteCost').change(function() {
-	  
-		well.set('cost_drillAndComplete', parseFloat(this.value));
-	  	console.log("cost.drillAndComplete set = " + well.get('cost_drillAndComplete') + " : Type = " + typeof well.get('cost_drillAndComplete'));
-
-	});
-
-
+	var well = new Well();
+	Wells.add({id: well.get("id")});
+	console.log("New Well Click Event Fired");
+	$('#dataModal').modal();
 });
+
 $('#save').click(function(){
-	// APPLY ENTERED VALUES TO MODEL
+	Wells.update(this.model.id);
+	console.log("Save event Model id = " + this.model.id);
 });
 $('#useDefault').click(function(){
 	// APPLY DEFAULT VALUES TO MODEL AND DISPLAY IN MODAL
 });
 
 $('#processData').click(function() {
-	produce(well.fetch());
+	Wells.fetch();
+	console.log(Wells.get(1))
+	produce(Wells.get(1));
 });
 
 
@@ -321,4 +251,4 @@ function drawGraph (production, time) {
 			});
 
 } //END drawGraph()
-
+}); //End DOM Ready Function

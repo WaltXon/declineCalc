@@ -2,14 +2,14 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Decline Calculator</title>
+	<title>Production Decline Calculator</title>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" href="styles/style.css">
 
 </head>
 <body>
 	<header id="pageHeader" class="page-header">
-		<h1>Economic Well Analysis</h1>
+		<h1>Well Production Analysis</h1>
 	</header><!-- /header -->
 	<div class="pageWrap">
 		<div class="row-fluid topGrid">
@@ -128,7 +128,10 @@
 				<div class="control-group">
 		  			<label></label>
 		  			<div class="controls">
-		  					<button id="newWell" type="button" class="btn btn-primary" data-toggle="modal" data-target="#dataModal">New Well</button>
+		  					<button id="newWell" type="button" class="btn btn-primary" >New Well</button>
+		  			</div>
+		  			<div class="currentInfo">
+		  				
 		  			</div>
 		  		</div>
 		  		<div class="declineParams">
@@ -224,7 +227,7 @@
 		</div><!-- /header -->
 		<div class="modal-body">
 
-			<form class="form-horizontal">
+			<form class="form-horizontal input.content">
 			<div class="control-group">
 	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
 	  			<div class="controls">
@@ -317,10 +320,11 @@
 	<script src="js/underscore-min.js"></script>
 	<script src="js/backbone-min.js"></script>
 	<script src="js/d3/d3.v3.min.js" type="text/javascript"></script>
+	<script src="js/backbone.localStorage-min.js"></script>
 	<script src="js/model.js"></script>
 	<script src="js/funcs.js"></script>
 	<script src="js/view.js"></script>
-	<script src="js/backbone-localstorage.js"></script>
+
 	<script src="js/decline.js" type="text/javascript"></script>
 	
 
