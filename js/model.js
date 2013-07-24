@@ -2,9 +2,12 @@
 // Well Model
 //
 
-var Well = Backbone.Model.extend({
+var app = app || {};
+
+var app.Well = Backbone.Model.extend({
 	 	defaults: {
 	 		id: 0,
+	 		user: 'me',
 	 		wellName: "Default",
 	 		initGasProduction: 1000.0,
 			initOilProduction: 200.0,
@@ -34,39 +37,15 @@ var Well = Backbone.Model.extend({
 			revenue_water: [],
 			revenue_month:[], 
 			revenue_netCashFlow: []
-		}, //end defaults
+		} //end defaults
 
-		validate: function(attribs){
-			if(attribs.bFactorOil == "0"){
-				return "This calculator does not currently handle the special case of Harmoic Decline (b=0)";
-			}
-		}, //End validate
-
-		initialize: function(){
-
-			if (this.get("id") == 0 || !this.get("id")){
-				this.set({"id": this.newId()});
-			}
-
-			console.log("New Well Initialized id = " + this.get("id"));
-
-			this.on('change', function(){
-				console.log("- Values for this model have changed");
-			});
-			this.on('invalid', function(model, error){
-				console.log(error);
-			})
-		},//End initialize
-		newId: function() {
-			return Wells.max().get('id') +1;
-		} //End newId
 	}); //End Well Model
 
 // Well Collection
 // --------------------
 
-var WellList = Backbone.Collection.extend({
-	model: Well,
+var app.WellList = Backbone.Collection.extend({
+	model: app.Well,
 
 	localStorage: new Backbone.LocalStorage("wells-backbone")
 

@@ -3,46 +3,7 @@ Walt Nixon
 May 2013
 */
 
-$(function(){
-
-
-// Create global well list 
-// --------------------------
-
-var Wells = new WellList();
-Wells.fetch();
-
-/*Set Click Events 
-=========================================================
-
-
-*/
-$('#newWell').click(function(){
-	//INSTIATIATE A NEW WELL
-	var well = new Well();
-	Wells.add({id: well.get("id")});
-	console.log("New Well Click Event Fired");
-	$('#dataModal').modal();
-});
-
-$('#save').click(function(){
-	Wells.update(this.model.id);
-	console.log("Save event Model id = " + this.model.id);
-});
-$('#useDefault').click(function(){
-	// APPLY DEFAULT VALUES TO MODEL AND DISPLAY IN MODAL
-});
-
-$('#processData').click(function() {
-	Wells.fetch();
-	console.log(Wells.get(1))
-	produce(Wells.get(1));
-});
-
-
-
-
-
+var = app || {};
 
 /*Reset Well Instance = Not currently used
 =========================================================
@@ -251,4 +212,4 @@ function drawGraph (production, time) {
 			});
 
 } //END drawGraph()
-}); //End DOM Ready Function
+

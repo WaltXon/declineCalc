@@ -1,83 +1,41 @@
 
+var app = app || {};
 
-var WellView = Backbone.View.extend({
-	tagName: 'li',
-	wellTpl:_.template("An Example Template"),
-	events: {
-	}, //end events
+
+var app.WellView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'wellContainer'
+	template:_.template( $("#wellTemplate").html()),
+
 	render: function() {
-		this.$el.html(this.wellTpl(this.model.toJSON()));
+		this.$el.html(this.template(this.model.toJSON()));
+
+		return this;
 	} //end render
 }); //End WellView Extend
 
-var wellview = new WellView();
-console.log(wellview.el);
 
+app.WellsView = Backbone.View.extend({
+	el: '#wells',
 
-var CurrentInfoView = Backbone.View.extend({
-	tagName: 'div',
-
-	template: _.template($('#currentInfo').html()),
-
-	events: {
-		"dblclick .view": "edit",
-		"keypress .edit": "updateOnEnter"
-	},
-
-	initialize: function(){
-		this.listenTo(this.model, "change", this.render);
-		this.listenTo(this.model, "destroy", this.remove);
+	intiailize: function(initialWells){
+		this.collection = new app.WellList(intialWells);
+		this.render();
 	},
 
 	render: function(){
-		this.$el.html(this.template(this.model.toJSON()));
-		this.input = this.$('edit');
-		return this;
+		this.collection.each(function(item) {
+			this.renderWell(item);
+		}, this);
 	},
 
-	edit: function(){
-		this.$el.addClass("editing");
-		this.input.focus();
-
-	},
-
-	close: function() {
-		var value = this.input.val();
-		if (!value){
-			this.clear();
-		}else {
-			this.model.save({id: value});
-			this.$el.removeClass("editing");
-		}
-	}, 
-
-	updateOnEnter: function(e){
-		if (e.keyCode ==13) this.close();
-	},
-
-	clear: function(){
-		this.model.destroy();
+	renderWell: function(item) {
+		var wellView = new app.WellView({
+			model: item
+		});
+		this.$el.append(wellView.render().el);
 	}
 
-})
-
-var FormView = Backbone.View.extend({
-  events: {
-    "change input.content":  "contentChanged"
-  },
-  initialize: function() {
-    _.bindAll(this, 'contentChanged');
-    this.inputContent = this.$('input.content');
-  },
-  contentChanged: function(e) {
-    var input = this.inputContent;
-
-    // if you use local storage save 
-    this.model.save({content: input.val()});
-
-    // if you send request to server is prob. good idea to set the var and save at the end, in a blur event or in some sync. maintenance timer.
-    // this.model.set({content: input.val()});
-  }
 });
 
-var form = new FormView();
+

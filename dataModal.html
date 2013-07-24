@@ -9,15 +9,19 @@
 </head>
 <body>
 	
-	<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 			<h3 id="modalLabel">Well Data Entry</h3>
+			<div class="btn-group btn-group buttonGroup">
+				<button id="save" type="button" class="btn btn-warning" name="save" value="">Save</button>
+		  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data </button>
+				<button id="useDefault" type="button" class="btn" name="useDefault" value="">Default Values</button>
+			</div>
 		</div><!-- /header -->
 		<div class="modal-body">
-	  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data</button>
-			<button id="useDefault" type="button" class="btn btn-info pull-right" name="useDefault" value="">Use Default Values</button>
-			<form class="form-horizontal">
+
+			<form class="form-horizontal input.content">
 			<div class="control-group">
 	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
 	  			<div class="controls">
@@ -34,7 +38,7 @@
 	  			<label class="control-label" for="bFactorOil">b-Factor (Oil) </label>
 	  			<div class="controls">
 	  				<input id="bFactorOil" type="text" name="bFactorOil" placeholder="b-Factor Oil Curve">	
-	  			</div>+
+	  			</div>
 				</div>
 			<div class="control-group">
 	  			<label class="control-label" for="initGasProduction">Initial Gas Production </label>
@@ -103,9 +107,8 @@
 	  			</div>
 	  		</div>
 			</form>
-		</div>
-	</div>
-
+		</div><!-- /modal-body -->
+	</div><!-- /dataModal -->
 	<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
 	<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/underscore-min.js"></script>
@@ -115,7 +118,7 @@
 	<script src="js/funcs.js"></script>
 	<script src="js/view.js"></script>
 	<script src="js/decline.js" type="text/javascript"></script>
-	
+		<script src="js/app.js" type="text/javascript"></script>
 
 </body>
 </html>
