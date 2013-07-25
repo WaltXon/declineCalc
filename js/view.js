@@ -2,9 +2,9 @@
 var app = app || {};
 
 
-var app.WellView = Backbone.View.extend({
+app.WellView = Backbone.View.extend({
 	tagName: 'div',
-	className: 'wellContainer'
+	className: 'wellContainer',
 	template:_.template( $("#wellTemplate").html()),
 
 	render: function() {
@@ -15,7 +15,7 @@ var app.WellView = Backbone.View.extend({
 }); //End WellView Extend
 
 
-app.WellsView = Backbone.View.extend({
+app.WellCollectionView = Backbone.View.extend({
 	el: '#wells',
 
 	intiailize: function(initialWells){

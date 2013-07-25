@@ -4,7 +4,7 @@
 
 var app = app || {};
 
-var app.Well = Backbone.Model.extend({
+app.Well = Backbone.Model.extend({
 	 	defaults: {
 	 		id: 0,
 	 		user: 'me',
@@ -44,10 +44,10 @@ var app.Well = Backbone.Model.extend({
 // Well Collection
 // --------------------
 
-var app.WellList = Backbone.Collection.extend({
-	model: app.Well,
+app.WellList = Backbone.Collection.extend({
+	model: app.Well
 
-	localStorage: new Backbone.LocalStorage("wells-backbone")
+	// ,	localStorage: new Backbone.LocalStorage("wells-backbone")
 
 });
 
