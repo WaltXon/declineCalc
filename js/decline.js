@@ -3,7 +3,7 @@ Walt Nixon
 May 2013
 */
 
-var = app || {};
+var app = app || {};
 
 /*Reset Well Instance = Not currently used
 =========================================================

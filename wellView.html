@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Decline Calculator</title>
+	<title>Well View Test</title>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" href="styles/style.css">
 
@@ -18,46 +18,77 @@
 	            <button id="add">Add</button>
 	        </div>
 	    </form>
+	
+		<!-- <div class="wellContainer">
+			<ul>
+				<li>id</li>
+		 		<li>user</li>
+		 		<li>wellName</li>
+		 		<li>initGasProduction</li>
+				<li>initOilProduction</li>
+				<li>initWaterProduction</li>
+				<li>bFactorOil</li>
+				<li>bFactorGas</li>
+				<li>bFactorWater</li>
+				<li>initGasDecline</li>
+				<li>initOilDecline</li>
+				<li>initWaterDecline</li>
+				<li>timeStart</li>
+				<li>econLife</li>
+				<li>price_oil</li>
+				<li>price_gas</li>
+				<li>cost_drillAndComplete</li>
+				<li>cost_loe</li>
+				<li>cost_taxes</li>
+				<li>production_oil</li>
+				<li>production_cumOil</li>
+				<li>production_gas</li>
+				<li>production_cumGas</li>
+				<li>production_water</li>
+				<li>production_cumWater</li>
+				<li>production_month</li>
+				<li>revenue_oil</li>
+				<li>revenue_gas</li>
+				<li>revenue_water</li>
+				<li>revenue_month</li>
+				<li>revenue_netCashFlow</li>
+			</ul>
+
+			<button class="delete">Delete</button>
+		</div> -->
 	</div>
 
 
-	<div class="wellContainer">
-		<ul>
-			<li>id</li>
-	 		<li>user</li>
-	 		<li>wellName</li>
-	 		<li>initGasProduction</li>
-			<li>initOilProduction</li>
-			<li>initWaterProduction</li>
-			<li>bFactorOil</li>
-			<li>bFactorGas</li>
-			<li>bFactorWater</li>
-			<li>initGasDecline</li>
-			<li>initOilDecline</li>
-			<li>initWaterDecline</li>
-			<li>timeStart</li>
-			<li>econLife</li>
-			<li>price_oil</li>
-			<li>price_gas</li>
-			<li>cost_drillAndComplete</li>
-			<li>cost_loe</li>
-			<li>cost_taxes</li>
-			<li>production_oil</li>
-			<li>production_cumOil</li>
-			<li>production_gas</li>
-			<li>production_cumGas</li>
-			<li>production_water</li>
-			<li>production_cumWater</li>
-			<li>production_month</li>
-			<li>revenue_oil</li>
-			<li>revenue_gas</li>
-			<li>revenue_water</li>
-			<li>revenue_month</li>
-			<li>revenue_netCashFlow</li>
-		</ul>
-	</div>
 
 
+
+
+
+	<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="modalLabel">Well Data Entry</h3>
+			<div class="btn-group btn-group buttonGroup">
+				<button id="save" type="button" class="btn btn-warning" name="save" value="">Save</button>
+		  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data </button>
+				<button id="useDefault" type="button" class="btn" name="useDefault" value="">Default Values</button>
+			</div>
+		</div><!-- /header -->
+		<div class="modal-body">
+			<form class="form-horizontal input.content">
+			<div class="control-group">
+	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
+	  			<div class="controls">
+	  				<input id="initOilProduction" type="text" name="initOilProduction" placeholder="Initial Oil Production Barrels">	
+	  			</div>
+	  		</div>
+	  		
+			</form>
+		
+		</div><!-- /modal-body -->
+
+	</div><!-- /dataModal -->
+	
 	<script id='wellTemplate' type="text/template">
 		<ul>
 			<li><%= id %></li>
@@ -92,42 +123,24 @@
 			<li><%=revenue_month %></li>
 			<li><%=revenue_netCashFlow %></li>
 		</ul>
+
+		<button class="delete">Delete</button>
 	</script>
 
-
-	<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-			<h3 id="modalLabel">Well Data Entry</h3>
-			<div class="btn-group btn-group buttonGroup">
-				<button id="save" type="button" class="btn btn-warning" name="save" value="">Save</button>
-		  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data </button>
-				<button id="useDefault" type="button" class="btn" name="useDefault" value="">Default Values</button>
-			</div>
-		</div><!-- /header -->
-		<div class="modal-body">
-			<form class="form-horizontal input.content">
-			<div class="control-group">
-	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
-	  			<div class="controls">
-	  				<input id="initOilProduction" type="text" name="initOilProduction" placeholder="Initial Oil Production Barrels">	
-	  			</div>
-	  		</div>
-	  		
-			</form>
-		
-		</div><!-- /modal-body -->
-
-	</div><!-- /dataModal -->
-
-	<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="js/lib/jquery-1.9.1.min.js" type="text/javascript"></script>
 	<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="js/underscore-min.js"></script>
-	<script src="js/backbone-min.js"></script>
-	<script src="js/d3/d3.v3.min.js" type="text/javascript"></script>
-	<script src="js/model.js"></script>
+	<script src="js/lib/underscore-min.js"></script>
+	<script src="js/lib/backbone-min.js"></script>
+	<script src="js/lib/d3/d3.v3.min.js" type="text/javascript"></script>
+	
+	<script src="js/models/well.js"></script>
+	<script src="js/collections/WellCollection.js"></script>
+	
+	<script src="js/views/well.js"></script>
+	<script src="js/views/WellCollectionView.js"></script>
+
+	
 	<script src="js/funcs.js"></script>
-	<script src="js/view.js"></script>
 	<script src="js/decline.js" type="text/javascript"></script>
 	<script src="js/app.js" type="text/javascript"></script>
 
