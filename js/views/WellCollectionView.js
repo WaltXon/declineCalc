@@ -4,7 +4,8 @@ var app = app || {};
 app.WellCollectionView = Backbone.View.extend({
 	el: $('#wells'),
 
-	intiailize: function(initWells){
+	initialize: function(initWells){
+		console.log('intiailize WellCollectionView');
 		this.collection = new app.WellCollection(initWells);
 		// this.collection.fetch();
 		this.render();
