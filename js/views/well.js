@@ -7,6 +7,15 @@ app.WellView = Backbone.View.extend({
 	className: 'wellContainer',
 	template: $("#wellTemplate").html(),
 
+	events: {
+		'click .delete': 'deleteWell'
+	},
+
+	deleteWell:function(){
+		this.model.destroy();
+		this.remove();
+	},
+	
 	render: function() {
 		var tmpl = _.template(this.template);
 		this.$el.html(tmpl(this.model.toJSON()));
