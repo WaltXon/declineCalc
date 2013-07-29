@@ -123,9 +123,38 @@
 			<li><%=revenue_month %></li>
 			<li><%=revenue_netCashFlow %></li>
 		</ul>
+<<<<<<< HEAD:index.html
 
 		<button class="delete">Delete</button>
 	</script>
+=======
+	</script>
+
+
+	<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="modalLabel">Well Data Entry</h3>
+			<div class="btn-group btn-group buttonGroup">
+				<button id="save" type="button" class="btn btn-warning" name="save" value="">Save</button>
+		  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data </button>
+				<button id="useDefault" type="button" class="btn" name="useDefault" value="">Default Values</button>
+			</div>
+		</div><!-- /header -->
+		<div class="modal-body">
+			<form class="form-horizontal input.content">
+			<div class="control-group">
+	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
+	  			<div class="controls">
+	  				<input id="initOilProduction" type="text" name="initOilProduction" placeholder="Initial Oil Production Barrels">	
+	  			</div>
+	  		</div>
+	  		
+			</form>
+		
+		</div><!-- /modal-body -->
+	</div><!-- /dataModal -->
+>>>>>>> delete 120 from wellview:wellView.html
 
 	<script src="js/lib/jquery-1.9.1.min.js" type="text/javascript"></script>
 	<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
