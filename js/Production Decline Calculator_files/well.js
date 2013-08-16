@@ -41,13 +41,4 @@ app.Well = Backbone.Model.extend({
 
 	}); //End Well Model
 
-// Well Collection
-// --------------------
-
-app.WellList = Backbone.Collection.extend({
-	model: app.Well
-
-	// ,	localStorage: new Backbone.LocalStorage("wells-backbone")
-
-});
 

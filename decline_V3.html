@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Production Decline Calculator</title>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="styles/style.css">
+
+</head>
+<body>
+	<header id="pageHeader" class="page-header">
+		<h1>Well Production Analysis</h1>
+	</header><!-- /header -->
+	<div class="pageWrap">
+		<div class="row-fluid topGrid">
+			<span class="span6">
+				<h2>Decline Information</h2>
+				<div class="control-group">
+		  			<label></label>
+		  			<div class="controls menu">
+		  					<button id="newWell" type="button" class="btn btn-primary" >New Well</button>
+		  			</div>
+		  			<div class="currentInfo">
+		  				
+		  			</div>
+		  		</div>
+		  		<div class="declineParams">
+		  			<!-- InsertMicroTemplate? -->
+		  		</div><!--/declineParams-->
+			</span> <!-- span6 -->
+			<span class="span6">
+				<h2>Graph</h2>
+				<div id="graph" class="graph">
+					
+				</div>
+			</span>
+			</div> <!-- span6 -->
+			<div class="row-fluid middleGrid">
+				<span class="span12">
+					<h3>Summary</h3>
+					<div class="results">
+						<table id="summaryTable" class="table table-condensed table-striped table-hover">
+						  <caption>Data calculated using above parameters</caption>
+						  <thead>
+						    <tr>
+						    	<th>Est. Cum. Oil (bbl)</th>
+						    	<th>Est. Cum. Gas (mcf)</th>
+						    	<th>Est. Cum. Water (bbl)</th>
+						    	<th>Est. Oil Rev ($)</th>
+						    	<th>Est. Gas Rev ($)</th>
+						    	<th>Est. Total Rev ($)</th>
+						    	<th>Est. Total Cost ($)</th>
+								<th>Est. Net Rev ($)</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						    	<td>...</td>
+						    	<td>...</td>
+						    	<td>...</td>
+						    	<td>...</td>
+						    	<td>...</td>
+						    	<td>...</td>
+						    	<td>...</td>
+						    	<td>...</td>
+						    </tr>
+						  </tbody>
+						</table>
+					</div> <!-- End Results -->
+				</span>
+			</div>	
+		<div class="row-fluid bottomGrid">
+				<span class="span12">
+					<h3>Results</h3>
+					<div class="results">
+						<table id="prodTable" class="table table-condensed table-striped table-hover">
+						  <caption>Data calculated using above parameters</caption>
+						  <thead>
+						    <tr>
+						    	<th>Year</th>
+							    <th>Month</th>
+							    <th>Spot Oil (bbl)</th>
+							    <th>Oil Cum (bbl)</th>
+								<th>Spot Gas (mcf)</th>
+							    <th>Gas Cum (mcf)</th>
+							    <th>Oil Price ($)</th>
+							    <th>Gas Price ($)</th>
+							    <th>Oil Revenue ($)</th>
+							    <th>Gas Revenue ($)</th>
+							    <th>Combined Revenue ($)</th>
+							    <th>Monthly Costs ($)</th>
+							    <th>D&amp;C Costs ($)</th>
+							    <th>Taxes ($)</th>
+							    <th>Undisc. Cash Flow ($)</th>
+							    <th>Net Disc. Cash Flow ($)</th>					     
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						    </tr>
+						  </tbody>
+						</table>
+
+					</div> <!-- End Results -->
+				</span>
+			</div>	
+	</div><!-- End Page Wrap -->
+	<div id="dataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="modalLabel">Well Data Entry</h3>
+			<div class="btn-group btn-group buttonGroup">
+				<button id="save" type="button" class="btn btn-warning" name="save" value="">Save</button>
+		  		<button id="processData" type="button" class="btn btn-primary" name="processData" value="">Process Data </button>
+				<button id="useDefault" type="button" class="btn" name="useDefault" value="">Default Values</button>
+			</div>
+		</div><!-- /header -->
+		<div class="modal-body">
+
+			<form class="form-horizontal input.content">
+			<div class="control-group">
+	  			<label class="control-label" for="initOilProduction">Initial Oil Production </label>
+	  			<div class="controls">
+	  				<input id="initOilProduction" type="text" name="initOilProduction" placeholder="Initial Oil Production Barrels">	
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="initOilDecline">Initial Oil Decline </label>
+	  			<div class="controls">
+	  				<input id="initOilDecline" type="text" name="initOilDecline" placeholder="Initial Oil Decline %">	
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="bFactorOil">b-Factor (Oil) </label>
+	  			<div class="controls">
+	  				<input id="bFactorOil" type="text" name="bFactorOil" placeholder="b-Factor Oil Curve">	
+	  			</div>
+				</div>
+			<div class="control-group">
+	  			<label class="control-label" for="initGasProduction">Initial Gas Production </label>
+	  			<div class="controls">
+	  				<input id="initGasProduction" type="text" name="initGasProduction" placeholder="Initial Gas Production mcf/d">	
+		  		</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="initGasDecline">Initial Gas Decline </label>
+	  			<div class="controls">
+	  				<input id="initGasDecline" type="text" name="initGasDecline" placeholder="Initial Gas Decline %">	
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="bFactorGas">b-Factor (Gas) </label>
+	  			<div class="controls">
+	  				<input id="bFactorGas" type="text" name="bFactorGas" placeholder="b-Factor Gas Curve">	
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="initWaterProduction">Initial Water Production </label>
+	  			<div class="controls">
+	  				<input id="initWaterProduction" type="text" name="initWaterProduction" placeholder="Initial Water Production Barrels">	
+	  			</div>
+				</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="initWaterDecline">Initial Water Decline </label>
+	  			<div class="controls">
+	  				<input id="initWaterDecline" type="text" name="initWaterDecline" placeholder="Initial Water Decline %">	
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="bFactorWater">b-Factor (Water) </label>
+	  			<div class="controls">
+	  				<input id="bFactorWater" type="text" name="bFactorWater" placeholder="b-Factor Water Curve">	
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="econLife">Economic Life</label>
+	  			<div class="controls">
+	  				<input id="econLife" type="text" name="econLife" placeholder="Economic Life in Years">	
+	  			</div>
+				</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="oilPrice">Oil Price</label>
+	  			<div class="controls">
+	  				<input id="oilPrice" type="text" name="oilPrice" placeholder="Oil Price Per bbl ($)">
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="gasPrice">Gas Price</label>
+	  			<div class="controls">
+	  				<input id="gasPrice" type="text" name="gasPrice" placeholder="Gas Price Per mcf ($)">
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="loe">LOE</label>
+	  			<div class="controls">
+	  				<input id="loeCost" type="text" name="loeCost" placeholder="LOE Cost per month ($)">
+	  			</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="afeCost">D&amp;C Cost</label>
+	  			<div class="controls">
+	  				<input id="drillAndCompleteCost" type="text" name="drillAndCompleteCost" placeholder="Drill and Complete Cost ($)">
+	  			</div>
+	  		</div>
+			</form>
+		</div><!-- /modal-body -->
+	</div><!-- /dataModal -->
+	<script id='wellDetailsTemplate' type="text/template">
+		<ul>
+			<label for="id">id: </label><input id="id" type="text"  value="<%id%>"/>
+	 		<li><%=user %></li>
+	 		<li><%=wellName %></li>
+	 		<li><%=initGasProduction %></li>
+			<li><%=initOilProduction %></li>
+			<li><%=initWaterProduction %></li>
+			<li><%=bFactorOil %></li>
+			<li><%=bFactorGas %></li>
+			<li><%=bFactorWater %></li>
+			<li><%=initGasDecline %></li>
+			<li><%=initOilDecline %></li>
+			<li><%=initWaterDecline %></li>
+			<li><%=timeStart %></li>
+			<li><%=econLife %></li>
+			<li><%=price_oil %></li>
+			<li><%=price_gas %></li>
+			<li><%=cost_drillAndComplete %></li>
+			<li><%=cost_loe %></li>
+			<li><%=cost_taxes %></li>
+			<li><%=production_oil %></li>
+			<li><%=production_cumOil %></li>
+			<li><%=production_gas %></li>
+			<li><%=production_cumGas %></li>
+			<li><%=production_water %></li>
+			<li><%=production_cumWater %></li>
+			<li><%=production_month %></li>
+			<li><%=revenue_oil %></li>
+			<li><%=revenue_gas %></li>
+			<li><%=revenue_water %></li>
+			<li><%=revenue_month %></li>
+			<li><%=revenue_netCashFlow %></li>
+		</ul>
+
+		<button class="delete">Delete</button>
+	</script>
+	<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/underscore-min.js"></script>
+	<script src="js/backbone-min.js"></script>
+	<script src="js/d3/d3.v3.min.js" type="text/javascript"></script>
+	<script src="js/backbone.localStorage-min.js"></script>
+	<script src="js/model.js"></script>
+	<script src="js/funcs.js"></script>
+	<script src="js/view.js"></script>
+
+	<script src="js/decline.js" type="text/javascript"></script>
+	<script src="js/app.js" type="text/javascript"></script>
+	
+
+</body>
+</html>
